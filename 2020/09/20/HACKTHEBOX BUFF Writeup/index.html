@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>Hello World - Laughing</title>
+  <title>HACKTHEBOX BUFF Writeup - Laughing</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -161,8 +161,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2019-11-12 00:17" pubdate>
-        November 12, 2019 am
+      <time datetime="2020-09-20 20:09" pubdate>
+        September 20, 2020 pm
       </time>
     </span>
   
@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      175 字
+      335 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      6
        分钟
     </span>
   
@@ -213,25 +213,52 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Hello World</h1>
+            <h1 style="display: none">HACKTHEBOX BUFF Writeup</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="hljs bash">$ hexo new <span class="hljs-string">"My New Post"</span></code></pre>
+              <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="靶机信息"><a href="#靶机信息" class="headerlink" title="靶机信息"></a>靶机信息</h2><p>Buff是HACKTHEBOX平台上的一台靶机，信息如下:</p>
+<pre><code class="hljs yaml"><span class="hljs-string">OS:Windows</span>
+<span class="hljs-attr">Difficulty:</span>	<span class="hljs-string">Easy</span>
+<span class="hljs-attr">Points:</span>	<span class="hljs-number">20</span>
+<span class="hljs-string">Release:18</span> <span class="hljs-string">Jul</span> <span class="hljs-number">2020</span>
+<span class="hljs-attr">IP:</span>	<span class="hljs-number">10.10</span><span class="hljs-number">.10</span><span class="hljs-number">.198</span></code></pre>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="hljs bash">$ hexo server</code></pre>
+<p>其中有20分，分别是Own User和Own Root</p>
+<h2 id="Own-User"><a href="#Own-User" class="headerlink" title="Own User"></a>Own User</h2><pre><code class="hljs applescript">Type <span class="hljs-keyword">below</span> <span class="hljs-keyword">the</span> hash <span class="hljs-keyword">that</span> <span class="hljs-keyword">is</span> inside <span class="hljs-keyword">the</span> user.txt <span class="hljs-built_in">file</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> machine. 
+The <span class="hljs-built_in">file</span> can be found under /home/&#123;username&#125; <span class="hljs-keyword">on</span> Linux machines <span class="hljs-keyword">and</span>
+<span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> Desktop <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> user <span class="hljs-keyword">on</span> Windows.</code></pre>
 
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="hljs bash">$ hexo generate</code></pre>
+<h2 id="Own-Root"><a href="#Own-Root" class="headerlink" title="Own Root"></a>Own Root</h2><pre><code class="hljs applescript">Type <span class="hljs-keyword">below</span> <span class="hljs-keyword">the</span> hash <span class="hljs-keyword">that</span> <span class="hljs-keyword">is</span> inside <span class="hljs-keyword">the</span> root.txt <span class="hljs-built_in">file</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> machine. 
+The <span class="hljs-built_in">file</span> can be found under /root <span class="hljs-keyword">on</span> Linux machines <span class="hljs-keyword">and</span> <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> Desktop
+<span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> Administrator <span class="hljs-keyword">on</span> Windows.</code></pre>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="hljs bash">$ hexo deploy</code></pre>
+<hr>
+<h1 id="Nmap扫描"><a href="#Nmap扫描" class="headerlink" title="Nmap扫描"></a>Nmap扫描</h1><pre><code class="hljs bash">root@kali:~<span class="hljs-comment"># nmap -sC -sV -A 10.10.10.198</span>
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-09-20 08:03 EDT
+Nmap scan report <span class="hljs-keyword">for</span> 10.10.10.198
+Host is up (0.44s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE VERSION
+8080/tcp open  http    Apache httpd 2.4.43 ((Win64) OpenSSL/1.1.1g PHP/7.4.6)
+|_http-open-proxy: Proxy might be redirecting requests
+|_http-server-header: Apache/2.4.43 (Win64) OpenSSL/1.1.1g PHP/7.4.6
+|_http-title: mrb3n<span class="hljs-string">'s Bro Hut
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running (JUST GUESSING): Microsoft Windows XP|7 (86%)
+OS CPE: cpe:/o:microsoft:windows_xp::sp2 cpe:/o:microsoft:windows_7
+Aggressive OS guesses: Microsoft Windows XP SP2 (86%), Microsoft Windows 7 (85%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 2 hops
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<h1 id="《关雎》"><a href="#《关雎》" class="headerlink" title="《关雎》"></a>《关雎》</h1><p>关关雎鸠，在河之洲。<br>窈窕淑女，君子好逑。<br>参差荇菜，左右流之。<br>窈窕淑女，寤寐求之。<br>求之不得，寤寐思服。<br>悠哉悠哉，辗转反侧。<br>参差荇菜，左右采之。<br>窈窕淑女，琴瑟友之。<br>参差荇菜，左右芼之。<br>窈窕淑女，钟鼓乐之。</p>
-<p>本博客使用Hexo，主题为Fluid，图床使用阿里云+Picgo方案</p>
-<p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20200918172947.jpg" srcset="/img/loading.gif" alt=""></p>
+TRACEROUTE (using port 8080/tcp)
+HOP RTT       ADDRESS
+1   343.95 ms 10.10.14.1
+2   422.91 ms 10.10.10.198
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 103.95 seconds</span></code></pre>
+
 
             </div>
             <hr>
@@ -242,7 +269,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E9%9D%9E%E6%8A%80%E6%9C%AF/">非技术</a>
+                      <a class="hover-with-bg" href="/tags/HACKTHEBOX-Writeup/">HACKTHEBOX Writeup</a>
                     
                   </div>
                 
@@ -255,15 +282,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/09/20/HACKTHEBOX%20BUFF%20Writeup/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">HACKTHEBOX BUFF Writeup</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2019/11/12/hello-world/">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
@@ -403,7 +430,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Hello World&nbsp;",
+        "HACKTHEBOX BUFF Writeup&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
