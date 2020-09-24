@@ -4,7 +4,26 @@
   
   
   <entry>
-    <title>HACKTHEBOX BUFF Writeup</title>
+    <title>SqliLab Less-1</title>
+    <link href="/2020/09/24/SqliLab%20Less-1/"/>
+    <url>/2020/09/24/SqliLab%20Less-1/</url>
+    
+    <content type="html"><![CDATA[<h1 id="SqliLab"><a href="#SqliLab" class="headerlink" title="SqliLab"></a>SqliLab</h1><h1 id="手动注入"><a href="#手动注入" class="headerlink" title="手动注入"></a>手动注入</h1><p>首先来到第一关，Less-1的链接是</p><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">43.160</span><span class="hljs-regexp">/sqli/</span>Less-<span class="hljs-number">1</span><span class="hljs-regexp">/</span></code></pre><p>黄子提示的是：<strong><em>Please input the ID as parameter with numeric value（请输入ID作为带数值的参数）</em></strong></p><p>提示我们输入id的数字参数，但是链接中并没有id参数，这需要我们自己去构造</p><p>构造后的链接为以下（借助HackBar工具更方便），并点击Execute</p><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">43.160</span><span class="hljs-regexp">/sqli/</span>Less-<span class="hljs-number">1</span><span class="hljs-regexp">/?id=1</span></code></pre><p>得到的网页如下</p><p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20200924192556.png" srcset="/img/loading.gif" alt=""></p><p>看到有两行数据出来</p><p>Your Login name:Dumb<br>Your Password:Dumb</p><p>接下来我们尝试把参数 id 的数值修改成其他数值看看</p><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">43.160</span><span class="hljs-regexp">/sqli/</span>Less-<span class="hljs-number">1</span><span class="hljs-regexp">/?id=2</span></code></pre><p>有不同的两条数据</p><p>Your Login name:Angelina<br>Your Password:I-kill-you</p><h2 id="猜测"><a href="#猜测" class="headerlink" title="猜测"></a>猜测</h2><p>SqliLab这个平台用的是SQL数据，我们可以猜测他的数据是怎么查询来的。用SQL语言查询，大概猜测是</p><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> ??<span class="hljs-keyword">name</span>??,??<span class="hljs-keyword">password</span>?? <span class="hljs-keyword">FROM</span> ??<span class="hljs-keyword">table</span>?? <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">id</span>=<span class="hljs-number">1</span>(以<span class="hljs-keyword">id</span>为<span class="hljs-number">1</span>作为例子)</code></pre><p> 这里有几项是猜测的，字段名不知道（name和password是猜测的名字），表名不知道（table也是猜测的名字），where后面的 id是否是那样的也不确定。所以接下来的步骤是确定这几项元素</p><h2 id="确定-id-部分"><a href="#确定-id-部分" class="headerlink" title="确定 id 部分"></a>确定 id 部分</h2><p>我们需要知道查询语句 id 部分是否只是单纯的数字，因为有可能查询语句的 id 部分可能是这样的</p><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> ??<span class="hljs-keyword">name</span>??,??<span class="hljs-keyword">password</span>?? <span class="hljs-keyword">FROM</span> ??<span class="hljs-keyword">table</span>?? <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">id</span>=<span class="hljs-string">'1'</span><span class="hljs-keyword">SELECT</span> ??<span class="hljs-keyword">name</span>??,??<span class="hljs-keyword">password</span>?? <span class="hljs-keyword">FROM</span> ??<span class="hljs-keyword">table</span>?? <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">id</span>=<span class="hljs-string">"1"</span></code></pre><p>有可能 id 参数被引号或者括号包围，首先我们在 id 数值后面加一个冒号</p><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">43.160</span><span class="hljs-regexp">/sqli/</span>Less-<span class="hljs-number">1</span><span class="hljs-regexp">/?id=1'</span></code></pre><p>这时候网页出现了黄色的警告文字：<em>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘’1’’ LIMIT 0,1’ at line 1</em></p><p>其中<em>‘’1’’ LIMIT 0,1’</em>外面的一对单引号是警告里面自带的，让我们摘掉他</p><p>现在剩下<em>‘1’’ LIMIT 0,1</em></p><p>我们把目光放在引号那里，其中1后面的<strong>一个</strong>单引号是我们故意输入的那个单引号，<strong>剩下的那对单引号就是SQL查询语句中的</strong>了。所以我们猜测的 id 部分可以确认了，SQL语句现在是这样的了</p><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> ??<span class="hljs-keyword">name</span>??,??<span class="hljs-keyword">password</span>?? <span class="hljs-keyword">FROM</span> ??<span class="hljs-keyword">table</span>?? <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">id</span>=<span class="hljs-string">'1'</span></code></pre>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>SqliLab</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>HTB Buff Writeup</title>
     <link href="/2020/09/20/HACKTHEBOX%20BUFF%20Writeup/"/>
     <url>/2020/09/20/HACKTHEBOX%20BUFF%20Writeup/</url>
     
@@ -14,7 +33,9 @@
     
     <tags>
       
-      <tag>HACKTHEBOX,Writeup</tag>
+      <tag>Writeup</tag>
+      
+      <tag>HTB</tag>
       
     </tags>
     
