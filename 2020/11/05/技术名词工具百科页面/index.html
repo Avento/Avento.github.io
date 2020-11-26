@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      269 字
+      646 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      8
        分钟
     </span>
   
@@ -230,8 +230,28 @@
 <h2 id="Linux的目录介绍"><a href="#Linux的目录介绍" class="headerlink" title="Linux的目录介绍"></a>Linux的目录介绍</h2><p>Linux各目录及每个目录的详细介绍：<a href="https://www.cnblogs.com/zhuchenglin/p/8686924.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhuchenglin/p/8686924.html</a></p>
 <h2 id="tty"><a href="#tty" class="headerlink" title="tty"></a>tty</h2><p>Linux内核tty：<a href="http://blog.chinaunix.net/uid-20543672-id-3225777.html" target="_blank" rel="noopener">http://blog.chinaunix.net/uid-20543672-id-3225777.html</a></p>
 <h2 id="Metasploit"><a href="#Metasploit" class="headerlink" title="Metasploit"></a>Metasploit</h2><p>Metasploit 使用简介：<a href="https://www.cnblogs.com/daban/p/3761529.html" target="_blank" rel="noopener">https://www.cnblogs.com/daban/p/3761529.html</a></p>
+<p>back</p>
+<p>info</p>
+<p>search cve:2018</p>
 <h2 id="payload和exploit的区别"><a href="#payload和exploit的区别" class="headerlink" title="payload和exploit的区别"></a>payload和exploit的区别</h2><p>exploit是拿下系统前进行的活动，目标是拿下目标系统；</p>
 <p>payload是在拿下目标系统后所进行的操作，目标是提升权限、加强控制等操作，属于后渗透测试。</p>
+<h2 id="python-requirements文件"><a href="#python-requirements文件" class="headerlink" title="python requirements文件"></a>python requirements文件</h2><p><a href="https://blog.51cto.com/meyangyang/2094937" target="_blank" rel="noopener">https://blog.51cto.com/meyangyang/2094937</a></p>
+<h2 id="Linux-etc-shadow"><a href="#Linux-etc-shadow" class="headerlink" title="Linux /etc/shadow"></a>Linux /etc/shadow</h2><p>/etc/shadow 文件，用于存储 Linux 系统中用户的密码信息，又称为“影子文件”。</p>
+<p>前面介绍了 /etc/passwd 文件，由于该文件允许所有用户读取，易导致用户密码泄露，因此 Linux 系统将用户的密码信息从 /etc/passwd 文件中分离出来，并单独放到了此文件中。</p>
+<p>详细解析：<a href="http://c.biancheng.net/view/840.html" target="_blank" rel="noopener">http://c.biancheng.net/view/840.html</a></p>
+<h2 id="Linux-etc-passwd"><a href="#Linux-etc-passwd" class="headerlink" title="Linux /etc/passwd"></a>Linux /etc/passwd</h2><p>详细解析：<a href="http://c.biancheng.net/view/839.html" target="_blank" rel="noopener">http://c.biancheng.net/view/839.html</a></p>
+<h2 id="ls-l"><a href="#ls-l" class="headerlink" title="ls -l"></a>ls -l</h2><pre><code class="hljs bash">root@kali:~<span class="hljs-comment"># ls -l /usr/bin/find</span>
+-rwxr-xr-x 1 root root 315904 9月   1  2019 /usr/bin/find</code></pre>
+
+<ol>
+<li>第一列：规定了不同的用户对文件所拥有的权限，具体权限的含义将在后续章节中讲解。</li>
+<li>第二列：引用计数，文件的引用计数代表该文件的硬链接个数，而目录的引用计数代表该目录有多少个一级子目录。</li>
+<li><em>第三列：所有者，也就是这个文件属于哪个用户。默认所有者是文件的建立用户。</em></li>
+<li><em>第四列：所属组，默认所属组是文件建立用户的有效组，一般情况下就是建立用户的所在组。</em></li>
+<li>第五列：大小，默认单位是字节。</li>
+<li>第六列：文件修改时间，文件状态修改时间或文件数据修改时间都会更改这个时间，注意这个时间不是文件的创建时间。</li>
+<li>第七列：文件名或目录名。</li>
+</ol>
 
             </div>
             <hr>
@@ -247,6 +267,12 @@
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2020/11/17/Vulnhub-DC-1-Writeup/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Vulnhub DC-1 Writeup</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

