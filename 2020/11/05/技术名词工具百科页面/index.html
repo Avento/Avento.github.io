@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>技术/名词/工具百科页面 - Laughing</title>
+  <title>技术名词工具百科页面 - Laughing</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1.5k 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      17
        分钟
     </span>
   
@@ -213,7 +213,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">技术/名词/工具百科页面</h1>
+            <h1 style="display: none">技术名词工具百科页面</h1>
             
             <div class="markdown-body" id="post-body">
               <h1 id="技术-名词-工具百科页面"><a href="#技术-名词-工具百科页面" class="headerlink" title="技术/名词/工具百科页面"></a>技术/名词/工具百科页面</h1><h2 id="反弹shell："><a href="#反弹shell：" class="headerlink" title="反弹shell："></a>反弹shell：</h2><p>两种，Bash反弹和Python反弹（Linux和Linux之间）</p>
@@ -254,7 +254,15 @@
 </ol>
 <h2 id="drupal7目录结构"><a href="#drupal7目录结构" class="headerlink" title="drupal7目录结构"></a>drupal7目录结构</h2><p>/includes 系统的核心函数<br>/misc 系统核心用的一些js脚本 图片资源等<br>/modules 系统核心模块<br>/profiles 安装配置文件 里面包括minimal（最小化安装）standard（标准安装）两种配置，区别是标准安装会在数据库创建2中节点的类型：页面和消息类型，还有tag术语表，最小化安装则所有节点类型都需要自己来创建<br>/scripts 命令行脚本 在命令行可以执行的脚本文件，包括安装脚本，数据库备份脚本等<br>/themes 系统默认主题<br>/sites 所有你自己的东西都要放在这个目录里，包括模块、主题、js脚本库。<br>/sites/default/settings.php 配置文件，主要是数据库连接配置<br>/sites/default/files 用户上传的文件和图片缓存 css缓存 js缓存等等<br>/sites/all/themes 用户的主题和第三方主题<br>/sites/all/modules 用户自定义模块和第三方模块<br>/sites/all/libraries 第三方js库 如在线编辑器、语法高亮库</p>
 <p>/index.php drupal系统的入口，负责所有页面的请求，调度到相应的处理程序，打印相应的页面。<br>/cron.php 计划任务执行程序，会定期执行一些数据的清理工作。<br>/install.php drupal安装程序 如果想重装drupal 清空数据库之后，执行/install.php就会重新安装，如果不清空数据库就会出错。<br>/robots.txt 告诉网络爬虫不要获取网站的某些部分<br>/update.php drupal的升级<br>/xmlrpc.php xmlrpc服务<br>.htaccess apache的目录配置文件 url重写配置 将请求映射到index.php</p>
-<h2 id="Linux下用SUID提权"><a href="#Linux下用SUID提权" class="headerlink" title="Linux下用SUID提权"></a>Linux下用SUID提权</h2><p><a href="https://blog.csdn.net/qq_36119192/article/details/84872644" target="_blank" rel="noopener">https://blog.csdn.net/qq_36119192/article/details/84872644</a></p>
+<h2 id="Linux下用SUID提权"><a href="#Linux下用SUID提权" class="headerlink" title="Linux下用SUID提权"></a>Linux下用SUID提权</h2><p><a href="https://blog.csdn.net/qq_36119192/article/details/84872644" target="_blank" rel="noopener">Linux下用SUID提权_谢公子的博客-CSDN博客_suid提权</a></p>
+<p><a href="https://www.cnblogs.com/qlwy/archive/2011/06/26/2121919.html" target="_blank" rel="noopener">linux权限补充：rwt rwT rws rwS 特殊权限 - csqlwy - 博客园 (cnblogs.com)</a></p>
+<p><a href="https://xz.aliyun.com/t/7258" target="_blank" rel="noopener">谈一谈Linux与suid提权 - 先知社区 (aliyun.com)</a></p>
+<p><strong>setuid：该位是让普通用户可以以root用户的角色运行只有root帐号才能运行的程序或命令</strong></p>
+<h2 id="SUID、SGID详解"><a href="#SUID、SGID详解" class="headerlink" title="SUID、SGID详解"></a>SUID、SGID详解</h2><p><a href="https://www.jianshu.com/p/71acd8dad454" target="_blank" rel="noopener">linux：SUID、SGID详解 - 简书 (jianshu.com)</a></p>
+<h2 id="find-后面的-exec"><a href="#find-后面的-exec" class="headerlink" title="find 后面的 -exec"></a>find 后面的 -exec</h2><p><a href="https://www.cnblogs.com/fengliu-/p/10220809.html" target="_blank" rel="noopener">find命令之exec</a></p>
+<p>使用find时，只要把想要的操作写在一个文件里，就可以用exec来配合find 查找，很方便的。在有些操作系统中，只允许 -exec 选项执行诸如 ls 或 ls -l 这样的命令。大多数用户使用着一些选项是为了查找旧文件并删除它们。建议再真正执行 rm 命令删除文件之前，最好先用 ls 命令看一下，确认他们是所要删除的文件。 exec 选项后面跟随着所要执行的命令或脚本，然后是一对儿{}，一个空格和一个\，最后是一个分号。为了使用 exec 选项，必须要同时使用 print 选项。如果验证一下 find 命令，会发现该命令只输出从当前路径起的相对路径及文件名。</p>
+<h2 id="sh脚本语法"><a href="#sh脚本语法" class="headerlink" title=".sh脚本语法"></a>.sh脚本语法</h2><p><a href="https://blog.csdn.net/missshirly/article/details/7496809" target="_blank" rel="noopener">sh脚本语法_sh脚本</a></p>
+<p>程序必须以下面的行开始（必须方在文件的第一行）：<br>#!/bin/sh<br>符号<em>#!*用来告诉系统它后面的参数是用来执行该文件的程序。在这个例子中我们使用</em>/bin/sh*来执行程序。</p>
 
             </div>
             <hr>
@@ -425,7 +433,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "技术/名词/工具百科页面&nbsp;",
+        "技术名词工具百科页面&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

