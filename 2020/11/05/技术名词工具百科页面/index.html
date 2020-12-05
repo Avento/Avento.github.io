@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.5k 字
+      1.7k 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17
+      21
        分钟
     </span>
   
@@ -263,7 +263,22 @@
 <p>使用find时，只要把想要的操作写在一个文件里，就可以用exec来配合find 查找，很方便的。在有些操作系统中，只允许 -exec 选项执行诸如 ls 或 ls -l 这样的命令。大多数用户使用着一些选项是为了查找旧文件并删除它们。建议再真正执行 rm 命令删除文件之前，最好先用 ls 命令看一下，确认他们是所要删除的文件。 exec 选项后面跟随着所要执行的命令或脚本，然后是一对儿{}，一个空格和一个\，最后是一个分号。为了使用 exec 选项，必须要同时使用 print 选项。如果验证一下 find 命令，会发现该命令只输出从当前路径起的相对路径及文件名。</p>
 <h2 id="sh脚本语法"><a href="#sh脚本语法" class="headerlink" title=".sh脚本语法"></a>.sh脚本语法</h2><p><a href="https://blog.csdn.net/missshirly/article/details/7496809" target="_blank" rel="noopener">sh脚本语法_sh脚本</a></p>
 <p>程序必须以下面的行开始（必须方在文件的第一行）：<br>#!/bin/sh<br>符号<em>#!*用来告诉系统它后面的参数是用来执行该文件的程序。在这个例子中我们使用</em>/bin/sh*来执行程序。</p>
+<h2 id="PATH"><a href="#PATH" class="headerlink" title="$PATH"></a>$PATH</h2><p><a href="https://www.cnblogs.com/xuanbjut/p/12823809.html" target="_blank" rel="noopener">Linux PATH环境变量及作用（初学者必读） - pycod - 博客园 (cnblogs.com)</a></p>
+<h2 id="rbash"><a href="#rbash" class="headerlink" title="rbash"></a>rbash</h2><h2 id="vim-vi执行命令"><a href="#vim-vi执行命令" class="headerlink" title="vim/vi执行命令"></a>vim/vi执行命令</h2><pre><code class="hljs livecodeserver">:!<span class="hljs-keyword">command</span></code></pre>
 
+<p>不退出vim，并执行shell命令command，将命令输出显示在vim的命令区域，不会改变当前编辑的文件的内容，例如</p>
+<pre><code class="hljs erlang-repl">:!ls -l</code></pre>
+
+<p>特别的可以运行:!bash来启动一个bash shell并执行命令，不需要退出vim</p>
+<h2 id="bin"><a href="#bin" class="headerlink" title="/bin"></a>/bin</h2><p><strong>/bin目录:</strong> </p>
+<p>bin为binary的简写主要放置一些 <a href="http://www.2cto.com/os/" target="_blank" rel="noopener">系统</a>的必备执行档例如:cat、cp、chmod df、dmesg、gzip、kill、ls、mkdir、more、mount、rm、su、tar等。</p>
+<p><strong>/usr/bin目录:</strong></p>
+<p>主要放置一些应用软件工具的必备执行档例如c++、g++、gcc、chdrv、diff、dig、du、eject、elm、free、gnome<em>、 zip、htpasswd、kfm、ktop、last、less、locale、m4、make、man、mcopy、ncftp、 newaliases、nslookup passwd、quota、smb</em>、wget等。</p>
+<p><strong>/sbin目录:</strong> </p>
+<p>主要放置一些系统管理的必备程序例如:cfdisk、dhcpcd、dump、e2fsck、fdisk、halt、ifconfig、ifup、 ifdown、init、insmod、lilo、lsmod、mke2fs、modprobe、quotacheck、reboot、rmmod、 runlevel、shutdown等。</p>
+<p><strong>/usr/sbin目录:</strong> </p>
+<p>放置一些网路管理的必备程序例如:dhcpd、httpd、imap、in.*d、inetd、lpd、named、netconfig、nmbd、samba、sendmail、squid、swap、tcpd、tcpdump等</p>
+<h2 id="git提权"><a href="#git提权" class="headerlink" title="git提权"></a>git提权</h2>
             </div>
             <hr>
             <div>
